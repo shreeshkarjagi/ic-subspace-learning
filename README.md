@@ -1,4 +1,4 @@
-# RECAST
+# ic-subspace-learning
 
 Code for "Subspace Learning with Interval-Censored Likelihoods for
 Dequantizing Percept PC LFP Snapshots" (IEEE MLSP 2026).
