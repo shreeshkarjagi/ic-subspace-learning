@@ -6,7 +6,7 @@ Dequantizing Percept PC LFP Snapshots" (IEEE MLSP 2026).
 ## Data
 
 Raw clinical data cannot be shared due to PHI restrictions under the
-study IRB. De-identified summary statistics available on request.
+study IRB.
 
 ## Setup
 
