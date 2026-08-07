@@ -1,0 +1,800 @@
+{
+  "cohort": {
+    "raw": {
+      "n": 9438,
+      "regime_rmse": {
+        "well_resolved": 0.03132868900793233,
+        "correctable": 0.031627100205097285,
+        "noise_floor": 0.03138124736606279
+      },
+      "ssim_mean": 0.7694452080669052,
+      "consistency": 1.0,
+      "plateaus_median": 13.0
+    },
+    "sg_sel": {
+      "n": 9438,
+      "regime_rmse": {
+        "well_resolved": 0.04464669677658188,
+        "correctable": 0.037222873008738715,
+        "noise_floor": 0.028554624659257285
+      },
+      "ssim_mean": 0.779196393619361,
+      "consistency": 0.980686716002836,
+      "plateaus_median": 5.0
+    },
+    "svd": {
+      "n": 9438,
+      "regime_rmse": {
+        "well_resolved": 0.738269773143045,
+        "correctable": 0.2936317463018914,
+        "noise_floor": 0.07795335016395553
+      },
+      "ssim_mean": 0.8614440914445256,
+      "consistency": 0.6982983643064093,
+      "plateaus_median": 0.0
+    },
+    "sccd": {
+      "n": 9438,
+      "regime_rmse": {
+        "well_resolved": 0.3094786018677715,
+        "correctable": 0.1630163796442045,
+        "noise_floor": 0.04729553693033521
+      },
+      "ssim_mean": 0.7193647468705062,
+      "consistency": 0.42279982303112673,
+      "plateaus_median": 1.0
+    },
+    "qppca": {
+      "n": 9438,
+      "regime_rmse": {
+        "well_resolved": 0.03331573403957182,
+        "correctable": 0.03163834050157373,
+        "noise_floor": 0.02925131969430152
+      },
+      "ssim_mean": 0.8317683251939874,
+      "consistency": 0.999105213895674,
+      "plateaus_median": 1.0
+    },
+    "qmf": {
+      "n": 9438,
+      "regime_rmse": {
+        "well_resolved": 0.0564115718791137,
+        "correctable": 0.050663048455690904,
+        "noise_floor": 0.03370410267724638
+      },
+      "ssim_mean": 0.8448397185383282,
+      "consistency": 0.8487505957898469,
+      "plateaus_median": 7.0
+    }
+  },
+  "per_patient": {
+    "S1": {
+      "raw": {
+        "n": 1062,
+        "regime_rmse": {
+          "well_resolved": 0.03139764658293235,
+          "correctable": 0.03163211520838125,
+          "noise_floor": 0.03121450876019777
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.03736901996970372,
+          "correctable": 0.10936077916325884,
+          "noise_floor": 0.2527496085194235
+        },
+        "ssim_mean": 0.7734174821291384,
+        "ssim_std": 0.020832923011292137,
+        "consistency": 1.0,
+        "plateaus_median": 14.0
+      },
+      "sg_sel": {
+        "n": 1062,
+        "regime_rmse": {
+          "well_resolved": 0.04806256847695846,
+          "correctable": 0.03929911822182297,
+          "noise_floor": 0.02920257505909874
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.05557558652108017,
+          "correctable": 0.11888731637802222,
+          "noise_floor": 0.2279591972203818
+        },
+        "ssim_mean": 0.7828455274998971,
+        "ssim_std": 0.020182841741293568,
+        "consistency": 0.9767806829296777,
+        "plateaus_median": 5.0
+      },
+      "svd": {
+        "n": 1062,
+        "regime_rmse": {
+          "well_resolved": 0.4127396170310012,
+          "correctable": 0.15356689342475777,
+          "noise_floor": 0.05083082380860546
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.43562719430111785,
+          "correctable": 0.3477541666597281,
+          "noise_floor": 0.32125340904708993
+        },
+        "ssim_mean": 0.891090978911753,
+        "ssim_std": 0.027611970329011564,
+        "consistency": 0.7268281288777939,
+        "plateaus_median": 0.0
+      },
+      "sccd": {
+        "n": 1062,
+        "regime_rmse": {
+          "well_resolved": 0.28116216824370266,
+          "correctable": 0.15286989467112597,
+          "noise_floor": 0.05483614432003577
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.3067890750936237,
+          "correctable": 0.3526206150585213,
+          "noise_floor": 0.4037848813595534
+        },
+        "ssim_mean": 0.6656823382021254,
+        "ssim_std": 0.17268915157553727,
+        "consistency": 0.35501248193404283,
+        "plateaus_median": 1.0
+      },
+      "qppca": {
+        "n": 1062,
+        "regime_rmse": {
+          "well_resolved": 0.03309519426135236,
+          "correctable": 0.03137002833775732,
+          "noise_floor": 0.029213130487635675
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.039102618603368,
+          "correctable": 0.10465062610903628,
+          "noise_floor": 0.2349789878317942
+        },
+        "ssim_mean": 0.83470376192002,
+        "ssim_std": 0.02057601811545574,
+        "consistency": 0.9998686112206018,
+        "plateaus_median": 1.0
+      },
+      "qmf": {
+        "n": 1062,
+        "regime_rmse": {
+          "well_resolved": 0.05706681162148411,
+          "correctable": 0.051382544452325804,
+          "noise_floor": 0.035614083912061265
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.06744599610289714,
+          "correctable": 0.15531031816567492,
+          "noise_floor": 0.2528724243865896
+        },
+        "ssim_mean": 0.8435663861054216,
+        "ssim_std": 0.03473739819146404,
+        "consistency": 0.8361070964539629,
+        "plateaus_median": 7.0
+      }
+    },
+    "S2": {
+      "raw": {
+        "n": 1560,
+        "regime_rmse": {
+          "well_resolved": 0.0316073398920954,
+          "correctable": 0.03160999829837459,
+          "noise_floor": 0.03125185295587676
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04571190113406695,
+          "correctable": 0.1684193464900346,
+          "noise_floor": 0.4130794304510119
+        },
+        "ssim_mean": 0.7602357802096377,
+        "ssim_std": 0.01876741207274263,
+        "consistency": 1.0,
+        "plateaus_median": 12.0
+      },
+      "sg_sel": {
+        "n": 1560,
+        "regime_rmse": {
+          "well_resolved": 0.04200042611430897,
+          "correctable": 0.034250111437800594,
+          "noise_floor": 0.02719804845966392
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.0598802271573243,
+          "correctable": 0.16021902023774726,
+          "noise_floor": 0.36106966680715263
+        },
+        "ssim_mean": 0.7696381409894474,
+        "ssim_std": 0.017796109299256204,
+        "consistency": 0.9851669648181276,
+        "plateaus_median": 5.0
+      },
+      "svd": {
+        "n": 1560,
+        "regime_rmse": {
+          "well_resolved": 0.3407712289630368,
+          "correctable": 0.1325339423829297,
+          "noise_floor": 0.02949341604438807
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.42275592212711727,
+          "correctable": 0.4280678118208513,
+          "noise_floor": 0.35546277864025794
+        },
+        "ssim_mean": 0.9055244927255968,
+        "ssim_std": 0.021616384729457733,
+        "consistency": 0.7752782746968793,
+        "plateaus_median": 0.0
+      },
+      "sccd": {
+        "n": 1560,
+        "regime_rmse": {
+          "well_resolved": 0.2216564495843348,
+          "correctable": 0.13675240869922425,
+          "noise_floor": 0.03357126805406111
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.29417463486326734,
+          "correctable": 0.42788110996929635,
+          "noise_floor": 0.4334372430932082
+        },
+        "ssim_mean": 0.6938915092295544,
+        "ssim_std": 0.17281187480743276,
+        "consistency": 0.4274150268336315,
+        "plateaus_median": 1.0
+      },
+      "qppca": {
+        "n": 1560,
+        "regime_rmse": {
+          "well_resolved": 0.03254236419243944,
+          "correctable": 0.03081562771101721,
+          "noise_floor": 0.029101325508844082
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04652595986695038,
+          "correctable": 0.15928275970390102,
+          "noise_floor": 0.3823961060205809
+        },
+        "ssim_mean": 0.8219899672705532,
+        "ssim_std": 0.018455676031639813,
+        "consistency": 0.9998558934605447,
+        "plateaus_median": 2.0
+      },
+      "qmf": {
+        "n": 1560,
+        "regime_rmse": {
+          "well_resolved": 0.05582757079607595,
+          "correctable": 0.04759811022038309,
+          "noise_floor": 0.02757549795449083
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.07940625606554602,
+          "correctable": 0.21304954674863932,
+          "noise_floor": 0.3401440398554738
+        },
+        "ssim_mean": 0.8188932539156732,
+        "ssim_std": 0.019003925941527562,
+        "consistency": 0.8915275293182269,
+        "plateaus_median": 6.0
+      }
+    },
+    "S3": {
+      "raw": {
+        "n": 732,
+        "regime_rmse": {
+          "well_resolved": 0.03146795223074915,
+          "correctable": 0.031510257349306826,
+          "noise_floor": 0.031883268480158516
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.03274039674247573,
+          "correctable": 0.1415543135292808,
+          "noise_floor": 0.3289431184790123
+        },
+        "ssim_mean": 0.7705620181703723,
+        "ssim_std": 0.021240502606845145,
+        "consistency": 1.0,
+        "plateaus_median": 13.0
+      },
+      "sg_sel": {
+        "n": 732,
+        "regime_rmse": {
+          "well_resolved": 0.046786748977246086,
+          "correctable": 0.035979151777247066,
+          "noise_floor": 0.028419368183938528
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04709029069859112,
+          "correctable": 0.13949557238600094,
+          "noise_floor": 0.28949580171670175
+        },
+        "ssim_mean": 0.7805367984287217,
+        "ssim_std": 0.020044468919058464,
+        "consistency": 0.983564197060194,
+        "plateaus_median": 5.0
+      },
+      "svd": {
+        "n": 732,
+        "regime_rmse": {
+          "well_resolved": 0.6932903661167917,
+          "correctable": 0.18475186441483266,
+          "noise_floor": 0.0380357490047201
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.4497356509157945,
+          "correctable": 0.43835355344262783,
+          "noise_floor": 0.3423804933471437
+        },
+        "ssim_mean": 0.8946935276078639,
+        "ssim_std": 0.03247616649496871,
+        "consistency": 0.7415491167873937,
+        "plateaus_median": 0.0
+      },
+      "sccd": {
+        "n": 732,
+        "regime_rmse": {
+          "well_resolved": 0.5138222807217006,
+          "correctable": 0.1528166265169927,
+          "noise_floor": 0.04875349827124451
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.3335201789606028,
+          "correctable": 0.4158924637476576,
+          "noise_floor": 0.513527310996034
+        },
+        "ssim_mean": 0.6372552334583254,
+        "ssim_std": 0.1905366179459849,
+        "consistency": 0.3441352141314017,
+        "plateaus_median": 1.0
+      },
+      "qppca": {
+        "n": 732,
+        "regime_rmse": {
+          "well_resolved": 0.036543355876834896,
+          "correctable": 0.031117442673363315,
+          "noise_floor": 0.029474925890630634
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.03540655659594737,
+          "correctable": 0.1335693478096186,
+          "noise_floor": 0.30262082386609734
+        },
+        "ssim_mean": 0.8344111690473164,
+        "ssim_std": 0.022806574929073856,
+        "consistency": 0.9978078536027448,
+        "plateaus_median": 1.0
+      },
+      "qmf": {
+        "n": 732,
+        "regime_rmse": {
+          "well_resolved": 0.05815153965743263,
+          "correctable": 0.04974915900872672,
+          "noise_floor": 0.0322956019724218
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.058984622360771566,
+          "correctable": 0.19298520295775096,
+          "noise_floor": 0.307762708002068
+        },
+        "ssim_mean": 0.8290847191360381,
+        "ssim_std": 0.034683042660194674,
+        "consistency": 0.8534121235226837,
+        "plateaus_median": 7.0
+      }
+    },
+    "S4": {
+      "raw": {
+        "n": 1038,
+        "regime_rmse": {
+          "well_resolved": 0.03123278021624101,
+          "correctable": 0.03146088562099186,
+          "noise_floor": 0.031395153438133455
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.031353891064355356,
+          "correctable": 0.08990897411540602,
+          "noise_floor": 0.18407346813092124
+        },
+        "ssim_mean": 0.7866673337708816,
+        "ssim_std": 0.023470404320654854,
+        "consistency": 1.0,
+        "plateaus_median": 17.0
+      },
+      "sg_sel": {
+        "n": 1038,
+        "regime_rmse": {
+          "well_resolved": 0.045344481465881305,
+          "correctable": 0.04014238429464576,
+          "noise_floor": 0.03130758093469244
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04395483118366399,
+          "correctable": 0.10361369886085119,
+          "noise_floor": 0.1754933660013939
+        },
+        "ssim_mean": 0.797009030793417,
+        "ssim_std": 0.022453811482902798,
+        "consistency": 0.9765425460411344,
+        "plateaus_median": 6.0
+      },
+      "svd": {
+        "n": 1038,
+        "regime_rmse": {
+          "well_resolved": 0.41130987103184,
+          "correctable": 0.1697733688298789,
+          "noise_floor": 0.06220116181453759
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.33091286556467764,
+          "correctable": 0.3522684384053602,
+          "noise_floor": 0.3045556005690516
+        },
+        "ssim_mean": 0.9165155341546798,
+        "ssim_std": 0.018266096537731404,
+        "consistency": 0.688451255395737,
+        "plateaus_median": 0.0
+      },
+      "sccd": {
+        "n": 1038,
+        "regime_rmse": {
+          "well_resolved": 0.30063887460014005,
+          "correctable": 0.16848203375453852,
+          "noise_floor": 0.06361874354084175
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.24147338078033845,
+          "correctable": 0.35962968892937286,
+          "noise_floor": 0.3283803710744042
+        },
+        "ssim_mean": 0.7288856119373373,
+        "ssim_std": 0.15384530090628407,
+        "consistency": 0.3415557646637093,
+        "plateaus_median": 0.0
+      },
+      "qppca": {
+        "n": 1038,
+        "regime_rmse": {
+          "well_resolved": 0.033612364686662954,
+          "correctable": 0.031722161639547816,
+          "noise_floor": 0.02988567239929056
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.03282001737403916,
+          "correctable": 0.08756642196008062,
+          "noise_floor": 0.1735345378178015
+        },
+        "ssim_mean": 0.8478915133061351,
+        "ssim_std": 0.021771353945398805,
+        "consistency": 0.9996340607309825,
+        "plateaus_median": 1.0
+      },
+      "qmf": {
+        "n": 1038,
+        "regime_rmse": {
+          "well_resolved": 0.05688804322057106,
+          "correctable": 0.05171376132043064,
+          "noise_floor": 0.04030625676434402
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.05604925069397568,
+          "correctable": 0.13547608243714407,
+          "noise_floor": 0.2156350279231037
+        },
+        "ssim_mean": 0.8875106434602192,
+        "ssim_std": 0.02071607025683063,
+        "consistency": 0.7990694687159264,
+        "plateaus_median": 9.0
+      }
+    },
+    "S5": {
+      "raw": {
+        "n": 1578,
+        "regime_rmse": {
+          "well_resolved": 0.03121850565578384,
+          "correctable": 0.03172468475152413,
+          "noise_floor": 0.03138497621611126
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.044232398685119016,
+          "correctable": 0.14012881122913654,
+          "noise_floor": 0.35104787816835353
+        },
+        "ssim_mean": 0.7628151247295655,
+        "ssim_std": 0.018440589828814764,
+        "consistency": 1.0,
+        "plateaus_median": 13.0
+      },
+      "sg_sel": {
+        "n": 1578,
+        "regime_rmse": {
+          "well_resolved": 0.044600930268966395,
+          "correctable": 0.036561717243172115,
+          "noise_floor": 0.027425380227469758
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.0624223643136801,
+          "correctable": 0.1416343491736129,
+          "noise_floor": 0.3056210162254222
+        },
+        "ssim_mean": 0.7723038992143334,
+        "ssim_std": 0.017426517456672938,
+        "consistency": 0.9824426955915151,
+        "plateaus_median": 5.0
+      },
+      "svd": {
+        "n": 1578,
+        "regime_rmse": {
+          "well_resolved": 0.5425086060228159,
+          "correctable": 0.18967428810181086,
+          "noise_floor": 0.036198221482321366
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.6213965611957984,
+          "correctable": 0.524996858338108,
+          "noise_floor": 0.3510779328271187
+        },
+        "ssim_mean": 0.8803427225776715,
+        "ssim_std": 0.02992231994987886,
+        "consistency": 0.7405360528978885,
+        "plateaus_median": 0.0
+      },
+      "sccd": {
+        "n": 1578,
+        "regime_rmse": {
+          "well_resolved": 0.42672749334018634,
+          "correctable": 0.16316754207529005,
+          "noise_floor": 0.04275779551017666
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.5062061835470597,
+          "correctable": 0.46419359360038853,
+          "noise_floor": 0.4460962294394948
+        },
+        "ssim_mean": 0.7181002492076008,
+        "ssim_std": 0.153950269909714,
+        "consistency": 0.3912223302974033,
+        "plateaus_median": 0.0
+      },
+      "qppca": {
+        "n": 1578,
+        "regime_rmse": {
+          "well_resolved": 0.033668364893400034,
+          "correctable": 0.032114516567566496,
+          "noise_floor": 0.029162000802243307
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04653302813819961,
+          "correctable": 0.1358364318502446,
+          "noise_floor": 0.32261145861382345
+        },
+        "ssim_mean": 0.8261107668273467,
+        "ssim_std": 0.018848541857084906,
+        "consistency": 0.998683447794775,
+        "plateaus_median": 1.0
+      },
+      "qmf": {
+        "n": 1578,
+        "regime_rmse": {
+          "well_resolved": 0.05708062615902915,
+          "correctable": 0.05176358932310756,
+          "noise_floor": 0.03565170129563485
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.07956529693827176,
+          "correctable": 0.20729363307684107,
+          "noise_floor": 0.37514243323707686
+        },
+        "ssim_mean": 0.8578256321979547,
+        "ssim_std": 0.03106225973435666,
+        "consistency": 0.8417337224039848,
+        "plateaus_median": 8.0
+      }
+    },
+    "S6": {
+      "raw": {
+        "n": 1872,
+        "regime_rmse": {
+          "well_resolved": 0.03121372201478602,
+          "correctable": 0.031677286413676974,
+          "noise_floor": 0.03147780332706756
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04346387465875306,
+          "correctable": 0.12327522858074053,
+          "noise_floor": 0.27813748459735066
+        },
+        "ssim_mean": 0.7682224998259142,
+        "ssim_std": 0.021732156873427267,
+        "consistency": 1.0,
+        "plateaus_median": 14.0
+      },
+      "sg_sel": {
+        "n": 1872,
+        "regime_rmse": {
+          "well_resolved": 0.04329201449377854,
+          "correctable": 0.03874976588824753,
+          "noise_floor": 0.029118188290371355
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.05847175611653247,
+          "correctable": 0.12839491301739028,
+          "noise_floor": 0.25136914613098177
+        },
+        "ssim_mean": 0.7778699756617958,
+        "ssim_std": 0.02107199142391352,
+        "consistency": 0.9789223481083945,
+        "plateaus_median": 6.0
+      },
+      "svd": {
+        "n": 1872,
+        "regime_rmse": {
+          "well_resolved": 0.4439707039617819,
+          "correctable": 0.20948197196622156,
+          "noise_floor": 0.044957355293369756
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.49824963783904685,
+          "correctable": 0.4717010132439169,
+          "noise_floor": 0.3225605224553044
+        },
+        "ssim_mean": 0.8864508422840318,
+        "ssim_std": 0.02128291387565964,
+        "consistency": 0.720569966209501,
+        "plateaus_median": 0.0
+      },
+      "sccd": {
+        "n": 1872,
+        "regime_rmse": {
+          "well_resolved": 0.25375791999050895,
+          "correctable": 0.22880356549786177,
+          "noise_floor": 0.05218811989302033
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.2968499318900032,
+          "correctable": 0.5031710707772705,
+          "noise_floor": 0.42464859361984786
+        },
+        "ssim_mean": 0.6825876512060094,
+        "ssim_std": 0.17001440414976118,
+        "consistency": 0.3713766315510501,
+        "plateaus_median": 1.0
+      },
+      "qppca": {
+        "n": 1872,
+        "regime_rmse": {
+          "well_resolved": 0.032592029446039825,
+          "correctable": 0.032828406262991244,
+          "noise_floor": 0.02940785835158866
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04457526815304355,
+          "correctable": 0.120048814341537,
+          "noise_floor": 0.25825402805062375
+        },
+        "ssim_mean": 0.8300584610596388,
+        "ssim_std": 0.02211134928690496,
+        "consistency": 0.9995817597561784,
+        "plateaus_median": 1.0
+      },
+      "qmf": {
+        "n": 1872,
+        "regime_rmse": {
+          "well_resolved": 0.05575856608038171,
+          "correctable": 0.05411712793671304,
+          "noise_floor": 0.03595107656600709
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.07565660380061365,
+          "correctable": 0.18868694865106148,
+          "noise_floor": 0.28363669438553263
+        },
+        "ssim_mean": 0.8276012946480376,
+        "ssim_std": 0.028425319726395105,
+        "consistency": 0.83918041476181,
+        "plateaus_median": 8.0
+      }
+    },
+    "S7": {
+      "raw": {
+        "n": 1596,
+        "regime_rmse": {
+          "well_resolved": 0.031252731528978325,
+          "correctable": 0.031646821854857406,
+          "noise_floor": 0.03126243836644754
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.03923373017931858,
+          "correctable": 0.15170871281675097,
+          "noise_floor": 0.3448786350244184
+        },
+        "ssim_mean": 0.7641962176328269,
+        "ssim_std": 0.023177625952642594,
+        "consistency": 1.0,
+        "plateaus_median": 13.0
+      },
+      "sg_sel": {
+        "n": 1596,
+        "regime_rmse": {
+          "well_resolved": 0.04515916078121338,
+          "correctable": 0.03628142387883388,
+          "noise_floor": 0.02817651141908237
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.05534511365601121,
+          "correctable": 0.14788359972049653,
+          "noise_floor": 0.3071763750101725
+        },
+        "ssim_mean": 0.7741713827479154,
+        "ssim_std": 0.022405533865971144,
+        "consistency": 0.9813875774708087,
+        "plateaus_median": 6.0
+      },
+      "svd": {
+        "n": 1596,
+        "regime_rmse": {
+          "well_resolved": 2.1154370903545097,
+          "correctable": 0.8762757085966745,
+          "noise_floor": 0.2519070915352077
+        },
+        "regime_rmse_db": {
+          "well_resolved": 13.16086361731111,
+          "correctable": 6.720528693087185,
+          "noise_floor": 2.2432995017666113
+        },
+        "ssim_mean": 0.6554905418500833,
+        "ssim_std": 0.03752278307940388,
+        "consistency": 0.4948757552796721,
+        "plateaus_median": 1.0
+      },
+      "sccd": {
+        "n": 1596,
+        "regime_rmse": {
+          "well_resolved": 0.27561960423895715,
+          "correctable": 0.11924951611279594,
+          "noise_floor": 0.0431555988919504
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.28759098013504525,
+          "correctable": 0.35776049030660423,
+          "noise_floor": 0.4367409789387909
+        },
+        "ssim_mean": 0.9091506348525907,
+        "ssim_std": 0.04550119171125883,
+        "consistency": 0.7288813118066484,
+        "plateaus_median": 0.0
+      },
+      "qppca": {
+        "n": 1596,
+        "regime_rmse": {
+          "well_resolved": 0.033045353037810754,
+          "correctable": 0.030938754914333077,
+          "noise_floor": 0.028812920489118283
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.04060218214087093,
+          "correctable": 0.1425200909729062,
+          "noise_floor": 0.31710756417663305
+        },
+        "ssim_mean": 0.8272126369269021,
+        "ssim_std": 0.021733108781689523,
+        "consistency": 0.9983048707038915,
+        "plateaus_median": 2.0
+      },
+      "qmf": {
+        "n": 1596,
+        "regime_rmse": {
+          "well_resolved": 0.05554290184057923,
+          "correctable": 0.04777635405905859,
+          "noise_floor": 0.030214481204860647
+        },
+        "regime_rmse_db": {
+          "well_resolved": 0.06816111075624055,
+          "correctable": 0.1937584132506188,
+          "noise_floor": 0.31029778128283186
+        },
+        "ssim_mean": 0.8493961003049535,
+        "ssim_std": 0.02154925974078982,
+        "consistency": 0.8802238153523342,
+        "plateaus_median": 7.0
+      }
+    }
+  }
+}

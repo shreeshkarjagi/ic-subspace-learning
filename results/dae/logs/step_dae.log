@@ -1,0 +1,47 @@
+DAE multi-seed eval
+  seeds: [42, 43, 44]
+  hemis: 14  (data_dir=<repo>/results/data)
+  workers: 8
+
+======================================================================
+  LOO
+======================================================================
+
+  seed=42
+    14 hemis in 198.1s
+
+  seed=43
+    14 hemis in 186.1s
+
+  seed=44
+    14 hemis in 180.9s
+
+  LOO COHORT (DAE, mean +/- std across 3 seeds)
+           regime   mean (uVp)        std                       per_seed
+    well_resolved       0.3458     0.0014 [0.3448 0.3474 0.3453]
+      correctable       0.1322     0.0009 [0.1332 0.1317 0.1317]
+      noise_floor       0.0400     0.0003 [0.0402 0.0400 0.0397]
+
+  Saved <repo>/results/dae/loo_results.json
+
+======================================================================
+  LOPO
+======================================================================
+  patients: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7']
+
+  seed=42
+    7 patients in 50.8s
+
+  seed=43
+    7 patients in 47.6s
+
+  seed=44
+    7 patients in 47.5s
+
+  LOPO COHORT (DAE, mean +/- std across 3 seeds)
+           regime   mean (uVp)        std                       per_seed
+    well_resolved       0.4278     0.0009 [0.4267 0.4283 0.4282]
+      correctable       0.1466     0.0083 [0.1428 0.1561 0.1407]
+      noise_floor       0.0477     0.0025 [0.0499 0.0481 0.0449]
+
+  Saved <repo>/results/dae/lopo_results.json

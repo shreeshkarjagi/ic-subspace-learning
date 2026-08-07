@@ -1,0 +1,41 @@
+K sweep on S6_left (936 segments)
+
+  K=3...
+    936 segments, 114 recording folds, K=3
+    55.9s
+           raw: 0.0311 0.0317 0.0313
+            sg: 0.1005 0.0493 0.0280
+        sg_sel: 0.0437 0.0369 0.0288
+           svd: 2.1914 1.2756 0.0656
+          sccd: 0.3146 0.1325 0.0478
+         qppca: 0.0339 0.0313 0.0287
+           qmf: 0.0549 0.0483 0.0362
+           dae: 0.3015 0.1406 0.0415
+
+  K=5...
+    936 segments, 114 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    81.1s
+           raw: 0.0311 0.0317 0.0313
+            sg: 0.1005 0.0493 0.0280
+        sg_sel: 0.0437 0.0369 0.0288
+           svd: 2.5474 0.7435 0.2172
+          sccd: 0.2261 0.1066 0.0492
+         qppca: 0.0334 0.0314 0.0274
+           qmf: 0.0526 0.0469 0.0333
+           dae: 0.3015 0.1406 0.0415
+
+  K=7...
+    936 segments, 114 recording folds, K=7
+    108.5s
+           raw: 0.0311 0.0317 0.0313
+            sg: 0.1005 0.0493 0.0280
+        sg_sel: 0.0437 0.0369 0.0288
+           svd: 0.7034 0.3400 0.0641
+          sccd: 0.1833 0.1043 0.0460
+         qppca: 0.0328 0.0316 0.0263
+           qmf: 0.0509 0.0461 0.0322
+           dae: 0.3015 0.1406 0.0415
+
+  Saved to <repo>/results/k_sweep/

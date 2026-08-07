@@ -1,0 +1,9 @@
+Specparam bias test (fooof, [2, 45])
+  9438 spectra, freq_range=[2, 45]
+
+  n = 9438
+  Exponent RMSE: 0.0374 (SD = 0.32)
+  Detection:     81.4%
+  Spurious:      20.6%
+  Spurious CFs:  6342
+  Saved to <repo>/results/specparam/ (suffix: "")

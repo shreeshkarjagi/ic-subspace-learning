@@ -1,0 +1,52 @@
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+LOPO: 7 patients
+  S1: 2 hemispheres, 1062 segments
+  S2: 2 hemispheres, 1560 segments
+  S3: 2 hemispheres, 732 segments
+  S4: 2 hemispheres, 1038 segments
+  S5: 2 hemispheres, 1578 segments
+  S6: 2 hemispheres, 1872 segments
+  S7: 2 hemispheres, 1596 segments
+
+  Hold out S1...
+    Train: 8376 segments from 6 patients
+    Test: 1062 segments, 34.0s
+
+  Hold out S2...
+    Train: 7878 segments from 6 patients
+    Test: 1560 segments, 49.9s
+
+  Hold out S3...
+    Train: 8706 segments from 6 patients
+    Test: 732 segments, 26.8s
+
+  Hold out S4...
+    Train: 8400 segments from 6 patients
+    Test: 1038 segments, 45.8s
+
+  Hold out S5...
+    Train: 7860 segments from 6 patients
+    Test: 1578 segments, 62.9s
+
+  Hold out S6...
+    Train: 7566 segments from 6 patients
+    Test: 1872 segments, 70.0s
+
+  Hold out S7...
+    Train: 7842 segments from 6 patients
+    Test: 1596 segments, 54.6s
+
+================================================================================
+  LOPO COHORT
+================================================================================
+    Method      n well_resolve  correctable  noise_floor    SSIM  Consist
+-------------------------------------------------------------------------
+       raw   9438      0.03133      0.03163      0.03138   0.769   100.0%
+    sg_sel   9438      0.04465      0.03722      0.02855   0.779    98.1%
+       svd   9438      0.73827      0.29363      0.07795   0.861    69.8%
+      sccd   9438      0.30948      0.16302      0.04730   0.719    42.3%
+     qppca   9438      0.03332      0.03164      0.02925   0.832    99.9%
+       qmf   9438      0.05641      0.05066      0.03370   0.845    84.9%
+
+  Saved to <repo>/results/lopo/

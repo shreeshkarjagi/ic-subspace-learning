@@ -1,0 +1,273 @@
+{
+  "ranges": [
+    {
+      "n_spectra": 9438,
+      "n_failed": 0,
+      "freq_range": [
+        2,
+        30
+      ],
+      "exponent_rmse": 0.03516636414084627,
+      "exponent_bias": 0.0043722051780814095,
+      "natural_exponent_std": 0.3821456986053246,
+      "mean_r2_clean": 0.9849093525917658,
+      "mean_r2_quant": 0.9834609173451313,
+      "r2_change": -0.0014484352466343296,
+      "detection_rate": 0.869304662025205,
+      "spurious_rate": 0.15493681730563288,
+      "total_truth_peaks": 22694,
+      "total_matched": 19728,
+      "total_missed": 2966,
+      "total_spurious": 3617,
+      "spurious_peak_power_median": 0.20615601428672356,
+      "spurious_peak_power_p90": 0.38769765737472306,
+      "band_power": {
+        "theta": {
+          "rmse": 0.04759137308319873,
+          "bias": -0.000866047718376632,
+          "n": 9438
+        },
+        "alpha": {
+          "rmse": 0.05768762441027715,
+          "bias": 0.001295265335226473,
+          "n": 9438
+        },
+        "beta": {
+          "rmse": 0.06163506513900356,
+          "bias": 0.002516919009962365,
+          "n": 9438
+        },
+        "low_gamma": {
+          "rmse": 0.1764917479626629,
+          "bias": 0.027954582067126168,
+          "n": 9438
+        }
+      }
+    },
+    {
+      "n_spectra": 9438,
+      "n_failed": 0,
+      "freq_range": [
+        2,
+        40
+      ],
+      "exponent_rmse": 0.03540934057723498,
+      "exponent_bias": 0.007474518094780098,
+      "natural_exponent_std": 0.3453482129444814,
+      "mean_r2_clean": 0.9894443646257494,
+      "mean_r2_quant": 0.9865792118743822,
+      "r2_change": -0.002865152751367321,
+      "detection_rate": 0.8399543948409164,
+      "spurious_rate": 0.1789147394817498,
+      "total_truth_peaks": 28067,
+      "total_matched": 23575,
+      "total_missed": 4492,
+      "total_spurious": 5137,
+      "spurious_peak_power_median": 0.23181821143025577,
+      "spurious_peak_power_p90": 0.4296849355789255,
+      "band_power": {
+        "theta": {
+          "rmse": 0.04759137308319873,
+          "bias": -0.000866047718376632,
+          "n": 9438
+        },
+        "alpha": {
+          "rmse": 0.05768762441027715,
+          "bias": 0.001295265335226473,
+          "n": 9438
+        },
+        "beta": {
+          "rmse": 0.06163506513900356,
+          "bias": 0.002516919009962365,
+          "n": 9438
+        },
+        "low_gamma": {
+          "rmse": 0.1764917479626629,
+          "bias": 0.027954582067126168,
+          "n": 9438
+        }
+      }
+    },
+    {
+      "n_spectra": 9438,
+      "n_failed": 0,
+      "freq_range": [
+        2,
+        45
+      ],
+      "exponent_rmse": 0.037435527393571415,
+      "exponent_bias": 0.009397982495803021,
+      "natural_exponent_std": 0.32203407424790736,
+      "mean_r2_clean": 0.9907430638262038,
+      "mean_r2_quant": 0.9870116873895562,
+      "r2_change": -0.00373137643664757,
+      "detection_rate": 0.8137548198377875,
+      "spurious_rate": 0.2057554423644681,
+      "total_truth_peaks": 30084,
+      "total_matched": 24481,
+      "total_missed": 5603,
+      "total_spurious": 6342,
+      "spurious_peak_power_median": 0.23417386168985818,
+      "spurious_peak_power_p90": 0.46095870833017494,
+      "band_power": {
+        "theta": {
+          "rmse": 0.04759137308319873,
+          "bias": -0.000866047718376632,
+          "n": 9438
+        },
+        "alpha": {
+          "rmse": 0.05768762441027715,
+          "bias": 0.001295265335226473,
+          "n": 9438
+        },
+        "beta": {
+          "rmse": 0.06163506513900356,
+          "bias": 0.002516919009962365,
+          "n": 9438
+        },
+        "low_gamma": {
+          "rmse": 0.1764917479626629,
+          "bias": 0.027954582067126168,
+          "n": 9438
+        }
+      }
+    },
+    {
+      "n_spectra": 9438,
+      "n_failed": 0,
+      "freq_range": [
+        2,
+        50
+      ],
+      "exponent_rmse": 0.040950815583450505,
+      "exponent_bias": 0.00831103679846195,
+      "natural_exponent_std": 0.30291718881527496,
+      "mean_r2_clean": 0.9913500429481777,
+      "mean_r2_quant": 0.9867409165115164,
+      "r2_change": -0.004609126436661553,
+      "detection_rate": 0.79160181685354,
+      "spurious_rate": 0.21974891205660435,
+      "total_truth_peaks": 31483,
+      "total_matched": 24922,
+      "total_missed": 6561,
+      "total_spurious": 7019,
+      "spurious_peak_power_median": 0.23896297363290475,
+      "spurious_peak_power_p90": 0.46110900454576115,
+      "band_power": {
+        "theta": {
+          "rmse": 0.04759137308319873,
+          "bias": -0.000866047718376632,
+          "n": 9438
+        },
+        "alpha": {
+          "rmse": 0.05768762441027715,
+          "bias": 0.001295265335226473,
+          "n": 9438
+        },
+        "beta": {
+          "rmse": 0.06163506513900356,
+          "bias": 0.002516919009962365,
+          "n": 9438
+        },
+        "low_gamma": {
+          "rmse": 0.1764917479626629,
+          "bias": 0.027954582067126168,
+          "n": 9438
+        }
+      }
+    },
+    {
+      "n_spectra": 9438,
+      "n_failed": 0,
+      "freq_range": [
+        2,
+        60
+      ],
+      "exponent_rmse": 0.0559885941512617,
+      "exponent_bias": 0.005516025763063349,
+      "natural_exponent_std": 0.2677327259484151,
+      "mean_r2_clean": 0.9919391023663809,
+      "mean_r2_quant": 0.9847198227487065,
+      "r2_change": -0.007219279617674551,
+      "detection_rate": 0.7288975085782485,
+      "spurious_rate": 0.25981699187977214,
+      "total_truth_peaks": 33515,
+      "total_matched": 24429,
+      "total_missed": 9086,
+      "total_spurious": 8575,
+      "spurious_peak_power_median": 0.27062715759549816,
+      "spurious_peak_power_p90": 0.491420173559394,
+      "band_power": {
+        "theta": {
+          "rmse": 0.04759137308319873,
+          "bias": -0.000866047718376632,
+          "n": 9438
+        },
+        "alpha": {
+          "rmse": 0.05768762441027715,
+          "bias": 0.001295265335226473,
+          "n": 9438
+        },
+        "beta": {
+          "rmse": 0.06163506513900356,
+          "bias": 0.002516919009962365,
+          "n": 9438
+        },
+        "low_gamma": {
+          "rmse": 0.1764917479626629,
+          "bias": 0.027954582067126168,
+          "n": 9438
+        }
+      }
+    },
+    {
+      "n_spectra": 9438,
+      "n_failed": 0,
+      "freq_range": [
+        2,
+        80
+      ],
+      "exponent_rmse": 0.10937771933038956,
+      "exponent_bias": 0.0687310851582535,
+      "natural_exponent_std": 0.21805057033598235,
+      "mean_r2_clean": 0.9912011601345398,
+      "mean_r2_quant": 0.9763347290919426,
+      "r2_change": -0.014866431042597241,
+      "detection_rate": 0.5526536547172977,
+      "spurious_rate": 0.4423407917383821,
+      "total_truth_peaks": 35762,
+      "total_matched": 19764,
+      "total_missed": 15998,
+      "total_spurious": 15677,
+      "spurious_peak_power_median": 0.3677584440026368,
+      "spurious_peak_power_p90": 0.55152421576182,
+      "band_power": {
+        "theta": {
+          "rmse": 0.04759137308319873,
+          "bias": -0.000866047718376632,
+          "n": 9438
+        },
+        "alpha": {
+          "rmse": 0.05768762441027715,
+          "bias": 0.001295265335226473,
+          "n": 9438
+        },
+        "beta": {
+          "rmse": 0.06163506513900356,
+          "bias": 0.002516919009962365,
+          "n": 9438
+        },
+        "low_gamma": {
+          "rmse": 0.1764917479626629,
+          "bias": 0.027954582067126168,
+          "n": 9438
+        }
+      }
+    }
+  ],
+  "gate": {
+    "exponent_rmse": 0.1,
+    "detection_rate": 0.9,
+    "spurious_rate": 0.1
+  }
+}

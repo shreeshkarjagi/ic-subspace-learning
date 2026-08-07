@@ -1,0 +1,104 @@
+
+  S1_left...
+    531 segments, 63 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    36.8s
+
+  S1_right...
+    531 segments, 63 recording folds, K=5
+    34.6s
+
+  S2_left...
+    780 segments, 84 recording folds, K=5
+    59.0s
+
+  S2_right...
+    780 segments, 84 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    51.8s
+
+  S3_left...
+    366 segments, 45 recording folds, K=5
+    12.6s
+
+  S3_right...
+    366 segments, 45 recording folds, K=5
+    10.8s
+
+  S4_left...
+    519 segments, 63 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    17.9s
+
+  S4_right...
+    519 segments, 63 recording folds, K=5
+    30.4s
+
+  S5_left...
+    789 segments, 90 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    29.0s
+
+  S5_right...
+    789 segments, 90 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    67.1s
+
+  S6_left...
+    936 segments, 114 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    84.7s
+
+  S6_right...
+    936 segments, 114 recording folds, K=5
+    102.1s
+
+  S7_left...
+    798 segments, 99 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    86.7s
+
+  S7_right...
+    798 segments, 99 recording folds, K=5
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+<repo>/methods.py:126: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  try: prob2.solve(solver=cp.OSQP, max_iter=10000)
+    48.1s
+
+====================================================================================================
+  COHORT (30s segments, recording-level LOO, K=5)
+====================================================================================================
+    Method      n well_resolve  correctable  noise_floor    SSIM  Consist  Plat
+-------------------------------------------------------------------------------
+       raw   9438      0.03133      0.03163      0.03138   0.769   100.0%    14
+        sg   9438      0.12488      0.05169      0.02788   0.787    89.4%     5
+    sg_sel   9438      0.04465      0.03722      0.02855   0.779    98.1%     5
+       svd   9438      1.51490      0.44892      0.11680   0.720    60.2%     1
+      sccd   9438      0.24287      0.12349      0.04425   0.895    71.1%     0
+     qppca   9438      0.03381      0.03155      0.02781   0.837   100.0%     2
+       qmf   9438      0.05496      0.04884      0.03344   0.831    86.8%     8
+       dae   9438      0.34478      0.13324      0.04023   0.920    76.8%     0
+  q/sqrt(12) = 0.03175
+
+  Total: 675s
+  Saved to <repo>/results/eval/

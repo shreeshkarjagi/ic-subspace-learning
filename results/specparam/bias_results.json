@@ -1,0 +1,44 @@
+{
+  "n_spectra": 9438,
+  "n_failed": 0,
+  "freq_range": [
+    2,
+    45
+  ],
+  "exponent_rmse": 0.037435527393571415,
+  "exponent_bias": 0.009397982495803021,
+  "natural_exponent_std": 0.32203407424790736,
+  "mean_r2_clean": 0.9907430638262038,
+  "mean_r2_quant": 0.9870116873895562,
+  "r2_change": -0.00373137643664757,
+  "detection_rate": 0.8137548198377875,
+  "spurious_rate": 0.2057554423644681,
+  "total_truth_peaks": 30084,
+  "total_matched": 24481,
+  "total_missed": 5603,
+  "total_spurious": 6342,
+  "spurious_peak_power_median": 0.23417386168985818,
+  "spurious_peak_power_p90": 0.46095870833017494,
+  "band_power": {
+    "theta": {
+      "rmse": 0.04759137308319873,
+      "bias": -0.000866047718376632,
+      "n": 9438
+    },
+    "alpha": {
+      "rmse": 0.05768762441027715,
+      "bias": 0.001295265335226473,
+      "n": 9438
+    },
+    "beta": {
+      "rmse": 0.06163506513900356,
+      "bias": 0.002516919009962365,
+      "n": 9438
+    },
+    "low_gamma": {
+      "rmse": 0.1764917479626629,
+      "bias": 0.027954582067126168,
+      "n": 9438
+    }
+  }
+}

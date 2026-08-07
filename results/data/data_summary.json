@@ -1,0 +1,79 @@
+{
+  "S1_left": {
+    "n_segments": 531,
+    "n_recordings": 63,
+    "n_bins": 129
+  },
+  "S1_right": {
+    "n_segments": 531,
+    "n_recordings": 63,
+    "n_bins": 129
+  },
+  "S2_left": {
+    "n_segments": 780,
+    "n_recordings": 84,
+    "n_bins": 129
+  },
+  "S2_right": {
+    "n_segments": 780,
+    "n_recordings": 84,
+    "n_bins": 129
+  },
+  "S3_left": {
+    "n_segments": 366,
+    "n_recordings": 45,
+    "n_bins": 129
+  },
+  "S3_right": {
+    "n_segments": 366,
+    "n_recordings": 45,
+    "n_bins": 129
+  },
+  "S4_left": {
+    "n_segments": 519,
+    "n_recordings": 63,
+    "n_bins": 129
+  },
+  "S4_right": {
+    "n_segments": 519,
+    "n_recordings": 63,
+    "n_bins": 129
+  },
+  "S5_left": {
+    "n_segments": 789,
+    "n_recordings": 90,
+    "n_bins": 129
+  },
+  "S5_right": {
+    "n_segments": 789,
+    "n_recordings": 90,
+    "n_bins": 129
+  },
+  "S6_left": {
+    "n_segments": 936,
+    "n_recordings": 114,
+    "n_bins": 129
+  },
+  "S6_right": {
+    "n_segments": 936,
+    "n_recordings": 114,
+    "n_bins": 129
+  },
+  "S7_left": {
+    "n_segments": 798,
+    "n_recordings": 99,
+    "n_bins": 129
+  },
+  "S7_right": {
+    "n_segments": 798,
+    "n_recordings": 99,
+    "n_bins": 129
+  },
+  "_cohort": {
+    "n_hemispheres": 14,
+    "n_segments_total": 9438,
+    "n_recordings_total": 1116,
+    "q": 0.11,
+    "seg_dur": 30.0
+  }
+}
