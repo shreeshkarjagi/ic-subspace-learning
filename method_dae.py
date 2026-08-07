@@ -1,6 +1,4 @@
-"""
-Denoising autoencoder baseline (Section 3.6)
-"""
+#denoising autoencoder baseline, section 3.6
 import numpy as np
 
 try:
@@ -28,10 +26,10 @@ class _MLP(nn.Module if _HAVE_TORCH else object):
         return self.net(x)
 
 
+#fit on clean amps, quantized version goes in as input; comes back as plain numpy weights
 def fit_dae(train_amps, q, seed=42, hidden=256, dropout=0.1,
             epochs=100, batch=64, lr=1e-3, wd=1e-4,
             val_frac=0.1, patience=10, verbose=False):
-    """Train on clean amps, quantized version as input. Returns numpy state dict."""
     if not _HAVE_TORCH:
         raise ImportError('torch required for DAE training')
     torch.manual_seed(seed)
@@ -86,6 +84,7 @@ def fit_dae(train_amps, q, seed=42, hidden=256, dropout=0.1,
     if verbose:
         print(f'    DAE seed={seed}: {ep+1} ep, val_mse={best_val:.5f}')
 
+    #layer indices track the Sequential above, they shift if the net changes
     return {
         'W1': best_state['net.0.weight'],
         'b1': best_state['net.0.bias'],
@@ -99,6 +98,7 @@ def fit_dae(train_amps, q, seed=42, hidden=256, dropout=0.1,
     }
 
 
+#forward pass in numpy so inference needs no torch
 def correct_dae(freqs, quantized_amp, q, **kw):
     state = kw['dae_state']
     a = np.asarray(quantized_amp, dtype=np.float64)

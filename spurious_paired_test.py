@@ -1,7 +1,6 @@
-"""
-Paired significance of the Q-PPCA spurious rate reduction vs Raw
-"""
-import os, json
+#paired significance of the q-ppca spurious rate reduction vs raw
+import os
+import json
 import numpy as np
 from multiprocessing import Pool
 from scipy.stats import wilcoxon
@@ -13,8 +12,8 @@ N_BOOT = 5000
 SEED = 0
 
 
+#per-spectrum (matched, spurious) for both methods, scored on the exact same rows
 def hemi_counts(npz_path, fr, workers):
-    """Per-spectrum (matched, spurious) for Raw and Q-PPCA on one hemisphere same rows"""
     d = np.load(npz_path)
     freqs, truth, ca, cb = d['freqs'], d['truth'], d[f'corrected_{A}'], d[f'corrected_{B}']
     idx = np.where(~(np.any(np.isnan(ca), 1) | np.any(np.isnan(cb), 1)))[0]
@@ -30,8 +29,8 @@ def hemi_counts(npz_path, fr, workers):
     return np.array(rows, dtype=np.int64).reshape(-1, 4)
 
 
+#pooled spurious / detected; off=0 picks raw, off=2 picks q-ppca
 def rate(c, off):
-    """Pooled spurious rate = spurious / detected off=0 Raw, 2 Q-PPCA"""
     s = c[:, off + 1].sum(); det = c[:, off].sum() + s
     return s / det if det else np.nan
 
@@ -63,13 +62,15 @@ def main():
     counts = np.vstack(counts)
     pa, pb = rate(counts, 0), rate(counts, 2)
 
+    #hemisphere-level paired test
     stat, p2 = wilcoxon(ra, rb, alternative='two-sided')
     _, p1 = wilcoxon(ra, rb, alternative='greater')
 
+    #ci on the pooled difference, spectra resampled
     rng = np.random.default_rng(SEED); n = len(counts)
     boot = np.empty(N_BOOT)
     for i in range(N_BOOT):
-        c = counts[rng.integers(0, n, n)]           # one resample, both rates on it
+        c = counts[rng.integers(0, n, n)]           #one resample, both rates on it
         boot[i] = (rate(c, 0) - rate(c, 2)) * 100
     lo, hi = np.percentile(boot, [2.5, 97.5])
 

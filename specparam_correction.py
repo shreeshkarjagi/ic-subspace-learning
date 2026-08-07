@@ -1,7 +1,7 @@
-"""
-Spurious peak rate after correction
-"""
-import os, sys, json
+#spurious peak rate after correction
+import os
+import sys
+import json
 import numpy as np
 from multiprocessing import Pool
 from forward_model import to_db, quantize
@@ -12,8 +12,8 @@ FREQ_RANGE = [2, 45]
 ALL_METHODS = ['raw', 'sg', 'sg_sel', 'svd', 'sccd', 'qppca', 'qmf', 'dae']
 
 
+#clean vs corrected, one spectrum and one method at a time
 def eval_one_pair(args):
-    """Compare specparam on clean vs corrected for one spectrum, one method."""
     freqs, truth_amp, corr_amp, freq_range = args
 
     truth_power = np.maximum(truth_amp, 1e-10) ** 2
@@ -38,7 +38,6 @@ def eval_one_pair(args):
 
 
 def run_method(freqs, truth, corrected, freq_range, n_workers):
-    """Run specparam comparison for all spectra of one method."""
     N = truth.shape[0]
     args = [(freqs, truth[i], corrected[i], freq_range) for i in range(N)]
 
@@ -48,7 +47,7 @@ def run_method(freqs, truth, corrected, freq_range, n_workers):
     else:
         results = [eval_one_pair(a) for a in args]
 
-    # Aggregate
+    #aggregate
     valid = [r for r in results if r is not None]
     if not valid:
         return None
@@ -104,7 +103,7 @@ def main():
     freq_range = [int(args.freq_range[0]), int(args.freq_range[1])]
     print(f'Specparam after correction ({_BACKEND}, range={freq_range})')
 
-    # Accumulate across hemispheres per method
+    #accumulate across hemispheres per method
     method_agg = {mk: {'truth': [], 'corrected': [], 'freqs': None}
                   for mk in ALL_METHODS}
 
@@ -118,14 +117,13 @@ def main():
             if ckey not in d:
                 continue
             corr = d[ckey]
-            # Skip rows with NaN (unfilled from failed folds)
+            #nan rows are folds that never got filled in, drop them
             valid = ~np.any(np.isnan(corr), axis=1)
             method_agg[mk]['truth'].append(truth[valid])
             method_agg[mk]['corrected'].append(corr[valid])
             if method_agg[mk]['freqs'] is None:
                 method_agg[mk]['freqs'] = freqs
 
-    # Run per method
     all_results = {}
     for mk in ALL_METHODS:
         if not method_agg[mk]['truth']:
@@ -143,7 +141,7 @@ def main():
         else:
             print('failed')
 
-    # Print Table 3
+    #table 3
     print(f'\n{"=" * 80}')
     print(f'  TABLE 3: Specparam after correction, {freq_range}')
     print(f'{"=" * 80}')
@@ -156,7 +154,6 @@ def main():
         print(f'{mk:>10} {r["n_spectra"]:>6} {r["detection_rate"]:>8.1%} '
               f'{r["spurious_rate"]:>9.1%} {r["exponent_rmse"]:>10.4f}')
 
-    # Save
     out_path = os.path.join(out_dir, 'correction_results.json')
     with open(out_path, 'w') as f:
         json.dump({'freq_range': freq_range, 'methods': all_results}, f, indent=2)

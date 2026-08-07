@@ -1,7 +1,6 @@
-"""
-Specparam bias on uncorrected quantized spectra
-"""
-import os, json
+#specparam bias on uncorrected quantized spectra
+import os
+import json
 import numpy as np
 from multiprocessing import Pool
 from forward_model import quantize, to_db, BANDS
@@ -9,6 +8,7 @@ from specparam_utils import fit_fooof, match_peaks, _BACKEND
 
 Q = 0.11
 FREQ_RANGE = [2, 45]
+
 
 def eval_one_spectrum(args):
     freqs, amp, freq_range = args
@@ -25,6 +25,8 @@ def eval_one_spectrum(args):
     M, N = len(tp), len(qp)
     matched_cfs, spurious_cfs, matched_truth_cfs = [], [], []
     uq = set()
+
+    #greedy nearest-cf pairing, 2 hz tolerance, each peak used once
     if M > 0 and N > 0 and tp.shape[1] >= 1 and qp.shape[1] >= 1:
         dist = np.abs(tp[:, 0:1] - qp[:, 0:1].T)
         ut = set()
@@ -60,6 +62,7 @@ def eval_one_spectrum(args):
         'matched_truth_cfs': matched_truth_cfs, 'band_power': bp,
     }
 
+
 def run(data_dir, freq_range, n_workers):
     npz_files = sorted([f for f in os.listdir(data_dir) if f.endswith('.npz')])
     all_freqs, all_amps = None, []
@@ -76,6 +79,7 @@ def run(data_dir, freq_range, n_workers):
     else:
         results = [eval_one_spectrum(a) for a in args]
 
+    #spectra where the quantized fit blew up are dropped, not counted as misses
     valid = [r for r in results if r is not None and 'failed_quant' not in r]
     n_fail = N - len(valid)
     ce = np.array([r['exp_clean'] for r in valid])
@@ -134,6 +138,7 @@ def run(data_dir, freq_range, n_workers):
             arrays[f'{bn}_quant'] = np.array(bq)
     return metrics, arrays
 
+
 def main():
     import argparse
     parser = argparse.ArgumentParser()
@@ -141,11 +146,13 @@ def main():
     parser.add_argument('--freq_range', type=float, nargs=2, default=FREQ_RANGE)
     args = parser.parse_args()
     if _BACKEND is None: print('ERROR: fooof or specparam not installed.'); return
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(script_dir, 'results', 'data')
     out_dir = os.path.join(script_dir, 'results', 'specparam')
     os.makedirs(out_dir, exist_ok=True)
     freq_range = [int(args.freq_range[0]), int(args.freq_range[1])]
+
     print(f'Specparam bias test ({_BACKEND}, {freq_range})')
     metrics, arrays = run(data_dir, freq_range, args.workers)
     m = metrics
@@ -154,7 +161,8 @@ def main():
     print(f'  Detection:     {m["detection_rate"]:.1%}')
     print(f'  Spurious:      {m["spurious_rate"]:.1%}')
     print(f'  Spurious CFs:  {len(arrays["spurious_cfs"])}')
-    # Suffix filenames when freq_range differs from default
+
+    #suffix filenames when freq_range differs from default, otherwise runs overwrite each other
     if freq_range == [2, 45]:
         suffix = ''
     else:
@@ -163,5 +171,6 @@ def main():
         json.dump(metrics, f, indent=2)
     np.savez_compressed(os.path.join(out_dir, f'bias_arrays{suffix}.npz'), **arrays)
     print(f'  Saved to {out_dir}/ (suffix: "{suffix}")')
+
 
 if __name__ == '__main__': main()

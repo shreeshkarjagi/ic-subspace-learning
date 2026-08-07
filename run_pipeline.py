@@ -1,7 +1,9 @@
 """
 Run all analysis steps
 """
-import os, sys, subprocess
+import os
+import sys
+import subprocess
 
 STEPS = {
     1: ('Load data (30s segments)', 'prep_data.py'),
@@ -22,6 +24,7 @@ def run_step(step_num, data_dir, workers):
     print(f'  Step {step_num}: {name}')
     print(f'{"=" * 60}')
 
+    #step 1 wants the raw data path, every other step takes --workers
     cmd = [sys.executable, script]
     if step_num == 1:
         cmd.append(data_dir)
@@ -52,6 +55,7 @@ def main():
     print(f'  Workers: {args.workers}')
     print(f'  Steps: {steps}')
 
+    #steps are ordered and later ones read earlier outputs, so bail on first failure
     for s in steps:
         if s not in STEPS:
             print(f'  Unknown step {s}, skipping')

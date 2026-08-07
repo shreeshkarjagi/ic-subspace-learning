@@ -1,12 +1,13 @@
-"""
-Specparam frequency range sweep
-"""
-import os, json
+#specparam fit over a few upper frequency bounds
+import os
+import json
 import numpy as np
 from specparam_bias import run as run_bias
 from specparam_utils import _BACKEND
 
 FREQ_RANGES = [[2, 30], [2, 40], [2, 45], [2, 50], [2, 60], [2, 80]]
+
+#recorded in the output json for reference, nothing here enforces it
 GATE = {'exponent_rmse': 0.10, 'detection_rate': 0.90, 'spurious_rate': 0.10}
 
 
@@ -36,7 +37,7 @@ def main():
         print(f'    n={m["n_spectra"]}  exp_rmse={m["exponent_rmse"]:.4f}  '
               f'det={m["detection_rate"]:.1%}  spur={m["spurious_rate"]:.1%}')
 
-    # Table
+    #summary table
     print(f'\n{"=" * 80}')
     print(f'{"Range":>10} {"n":>6} {"Exp RMSE":>10} {"Detect":>8} '
           f'{"Spurious":>9} {"dR2":>10}')

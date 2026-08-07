@@ -1,13 +1,14 @@
-"""
-Load patient data with 30s segmentation
-"""
-import os, sys, json
+#load patient data, 30s segmentation
+import os
+import sys
+import json
 import numpy as np
 from forward_model import stream_to_amp
 from load_raw import load_patient
 
+
+#a patient dir is any subdir with percept jsons somewhere under it
 def _discover_patients(data_dir):
-    """Find subdirs that contain Percept JSONs."""
     pats = []
     for name in sorted(os.listdir(data_dir)):
         pdir = os.path.join(data_dir, name)
@@ -17,12 +18,13 @@ def _discover_patients(data_dir):
                 pats.append(name)
                 break
     return pats
+
+
 Q = 0.11
-SEG_DUR = 30.0  # seconds, matches Percept snapshot window
+SEG_DUR = 30.0  #seconds, matches percept snapshot window
 
 
 def load_and_segment(data_dir):
-    """Load all patients, segment streaming to 30s, return dict of per-hemi data."""
     all_hd = {}
     summary = {}
 
@@ -36,6 +38,7 @@ def load_and_segment(data_dir):
         anon = pid
 
         for hemi in ('left', 'right'):
+            #indefinite streaming only, and long enough for at least one segment
             streams = [s for s in pdata['streaming']
                        if s['hemisphere'] == hemi
                        and s['duration_s'] >= SEG_DUR
@@ -76,6 +79,7 @@ def load_and_segment(data_dir):
             if not amps_list:
                 continue
 
+            #fs can differ between recordings, so cut everything to the shortest spectrum
             ml = min(len(a) for a in amps_list)
             amps = np.array([a[:ml] for a in amps_list])
             freqs = freqs_ref[:ml]
@@ -113,7 +117,7 @@ def main():
     print(f'Loading with {SEG_DUR}s segmentation...')
     all_hd, summary = load_and_segment(data_dir)
 
-    # Save per-hemisphere npz
+    #one npz per hemisphere
     for key, hd in all_hd.items():
         path = os.path.join(outdir, f'{key}.npz')
         np.savez_compressed(path,
@@ -122,7 +126,7 @@ def main():
                             recording_ids=hd['recording_ids'])
         print(f'  saved {path}')
 
-    # Save summary JSON
+    #cohort totals go in the summary json
     total_seg = sum(s['n_segments'] for s in summary.values())
     total_rec = sum(s['n_recordings'] for s in summary.values())
     summary['_cohort'] = {

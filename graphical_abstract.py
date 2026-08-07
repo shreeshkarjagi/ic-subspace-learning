@@ -1,6 +1,4 @@
-"""
-Panels for the MLSP schematic figure
-"""
+#panels for the mlsp schematic figure
 
 import numpy as np
 import matplotlib
@@ -10,10 +8,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# ── synthetic spectrum ────────────────────────────────────────────────────
-
+#1/f aperiodic plus one gaussian peak, amplitude comes back in µVp
 def make_spectrum(freqs, aperiodic=(1.5, 1.8), peak_cf=10.0, peak_pw=0.6, peak_bw=2.5):
-    """1/f aperiodic + Gaussian peak, returns amplitude in µVp."""
     offset, exponent = aperiodic
     log_power = offset - exponent * np.log10(freqs)
     log_power += peak_pw * np.exp(-0.5 * ((freqs - peak_cf) / peak_bw) ** 2)
@@ -21,8 +17,8 @@ def make_spectrum(freqs, aperiodic=(1.5, 1.8), peak_cf=10.0, peak_pw=0.6, peak_b
     return amp
 
 
+#uniform scalar quantization in linear µVp, floored at 0
 def quantize_linear(amp, q):
-    """Uniform scalar quantization in linear µVp, floor at 0."""
     n = np.round(amp / q)
     n = np.maximum(n, 0)
     return n * q
@@ -31,8 +27,6 @@ def quantize_linear(amp, q):
 def to_db(amp, floor=1e-10):
     return 10.0 * np.log10(np.maximum(amp, floor))
 
-
-# ── parameters ────────────────────────────────────────────────────────────
 
 q = 0.109
 freqs = np.arange(1, 42.5, 1.0)
@@ -45,9 +39,6 @@ amp_true = np.maximum(amp_true, 0)
 amp_quant = quantize_linear(amp_true, q)
 db_true = to_db(amp_true)
 db_quant = to_db(amp_quant)
-
-
-# ── colors ────────────────────────────────────────────────────────────────
 
 C_TRUE = '#4F8FCC'
 C_QUANT = '#C45B4A'
@@ -74,9 +65,7 @@ plt.rcParams.update({
     'savefig.dpi': 600, 'savefig.bbox': 'tight', 'savefig.pad_inches': 0.1,
 })
 
-
-# ── Panel (a): True signal in dB ─────────────────────────────────────────
-
+#panel a: true signal in db
 fig_a, ax_a = plt.subplots(figsize=(3.5, 2.8))
 ax_a.plot(freqs, db_true, color=C_TRUE, lw=1.8)
 ax_a.set_xlabel('Frequency (Hz)')
@@ -87,8 +76,7 @@ plt.close(fig_a)
 print('Saved panel_a_true_signal.svg')
 
 
-# ── Panel (b): Snap to grid in µVp ───────────────────────────────────────
-
+#panel b: snap to the amplitude grid, in µVp
 fig_b, ax_b = plt.subplots(figsize=(3.5, 2.8))
 
 crossover_freq = 13
@@ -112,8 +100,7 @@ plt.close(fig_b)
 print('Saved panel_b_snap_to_grid.svg')
 
 
-# ── Panel (c): What Percept stores in dB ─────────────────────────────────
-
+#panel c: what percept actually stores, in db
 fig_c, ax_c = plt.subplots(figsize=(3.5, 2.8))
 ax_c.plot(freqs, db_true, color=C_TRUE, lw=1.0, alpha=0.45, label='True')
 ax_c.step(freqs, db_quant, where='mid', color=C_STORED, lw=1.2, label='Stored')
@@ -126,12 +113,10 @@ plt.close(fig_c)
 print('Saved panel_c_percept_stores.svg')
 
 
-# ── Panel (d): FOOOF on quantized spectrum ────────────────────────────────
-# Shows how staircase bumps trigger false peak detections.
-
+#panel d: fooof on the quantized spectrum, staircase bumps become false peaks
 from fooof import FOOOF
 
-# Use steeper aperiodic for more visible plateaus
+#steeper aperiodic so the plateaus are actually visible
 amp_true_d = make_spectrum(freqs, aperiodic=(1.5, 2.0))
 amp_true_d *= (1 + 0.02 * np.random.randn(len(freqs)))
 amp_true_d = np.maximum(amp_true_d, 0)
@@ -147,6 +132,7 @@ model_fit = 10.0 * fm.fooofed_spectrum_
 aperiodic_fit = 10.0 * fm._ap_fit
 peaks = fm.peak_params_
 
+#anything within 3 hz of the injected cf counts as the real one
 TRUE_CF = 10.0
 real_mask = np.array([abs(p[0] - TRUE_CF) < 3.0 for p in peaks])
 n_real = real_mask.sum()

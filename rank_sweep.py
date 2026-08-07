@@ -1,7 +1,7 @@
-"""
-K sensitivity sweep
-"""
-import os, json, time
+#how much the LOO results move when the subspace rank K changes
+import os
+import json
+import time
 import numpy as np
 from run_loo import evaluate_hemisphere, aggregate, _jsonable, ALL_METHODS
 from forward_model import REGIMES
@@ -21,7 +21,7 @@ def main():
     out_dir = os.path.join(script_dir, 'results', 'k_sweep')
     os.makedirs(out_dir, exist_ok=True)
 
-    # Find largest hemisphere
+    #only sweep the hemisphere with the most segments, this is slow
     npz_files = sorted([f for f in os.listdir(data_dir) if f.endswith('.npz')])
     best_key, best_n = None, 0
     for f in npz_files:
@@ -57,6 +57,7 @@ def main():
             vals = ' '.join(f'{rr.get(rn, 0):.4f}' for rn in REGIMES)
             print(f'    {mk:>10}: {vals}')
 
+    #json keys have to be strings
     with open(os.path.join(out_dir, 'k_sweep_results.json'), 'w') as f:
         json.dump(_jsonable({'hemisphere': best_key, 'K_values': K_VALUES,
                              'results': {str(k): v for k, v in all_results.items()}}),

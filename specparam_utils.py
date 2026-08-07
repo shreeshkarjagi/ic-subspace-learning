@@ -1,9 +1,8 @@
-"""
-Shared specparam fitting and peak matching
-"""
+#shared specparam fitting and peak matching
 import warnings
 import numpy as np
 
+#fooof was renamed to specparam upstream, take whichever is installed
 try:
     from fooof import FOOOF; _BACKEND = 'fooof'
 except ImportError:
@@ -19,12 +18,15 @@ SP_MIN_PEAK_HEIGHT = 0.1
 SP_APERIODIC_MODE = 'fixed'
 
 
+#returns None on anything that fails, callers must check
 def fit_fooof(freqs, power, freq_range):
     if FOOOF is None:
         return None
+
     ok = np.isfinite(freqs) & np.isfinite(power) & (power > 0)
     if ok.sum() < 10:
         return None
+
     try:
         fm = FOOOF(peak_width_limits=SP_PEAK_WIDTH, max_n_peaks=SP_MAX_PEAKS,
                    min_peak_height=SP_MIN_PEAK_HEIGHT,
@@ -51,6 +53,7 @@ def fit_fooof(freqs, power, freq_range):
         return None
 
 
+#greedy nearest-cf pairing, tol in hz, each peak used at most once
 def match_peaks(truth_peaks, test_peaks, tol=2.0):
     tp, qp = np.atleast_2d(truth_peaks), np.atleast_2d(test_peaks)
     M, N = len(tp), len(qp)
@@ -70,6 +73,7 @@ def match_peaks(truth_peaks, test_peaks, tol=2.0):
             cf_errors.append(float(qp[qi, 0] - tp[ti, 0]))
             pw_errors.append(float(qp[qi, 1] - tp[ti, 1]))
 
+    #whatever the test spectrum found that truth never had
     spur_pw = [float(qp[qi, 1]) for qi in range(N) if qi not in used_q]
     return {
         'n_matched': len(used_t),

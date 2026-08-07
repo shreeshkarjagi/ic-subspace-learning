@@ -1,7 +1,6 @@
-"""
-Multi-seed LOO and LOPO for DAE baseline
-"""
-import os, json, time
+import os
+import json
+import time
 import numpy as np
 from multiprocessing import Pool
 
@@ -13,10 +12,8 @@ Q = 0.11
 DEFAULT_SEEDS = [42, 43, 44]
 
 
-# ---------- fold workers (must be top-level for Pool) ----------
-
+#fold workers have to stay top-level, Pool needs to pickle them
 def _dae_loo_fold(args):
-    """One recording-level LOO fold, DAE only."""
     fold_rec, allamps, qmat, freqs, rec_ids, seed = args
     test_mask = rec_ids == fold_rec
     train_mask = ~test_mask
@@ -27,6 +24,7 @@ def _dae_loo_fold(args):
         sd = fit_dae(train_amps, Q, seed=seed)
     except Exception as e:
         return {'error': repr(e), 'indices': np.where(test_mask)[0].tolist()}
+
     test_idx = np.where(test_mask)[0]
     F = allamps.shape[1]
     records = []
@@ -49,10 +47,7 @@ def _dae_loo_fold(args):
     }
 
 
-# ---------- per-seed runners ----------
-
 def run_loo_one_seed(hemi_files, data_dir, seed, n_workers):
-    """Returns per-hemisphere aggregates + cohort weighted mean for this seed."""
     per_hemi = {}
     for npz_file in hemi_files:
         key = npz_file.replace('.npz', '')
@@ -61,6 +56,8 @@ def run_loo_one_seed(hemi_files, data_dir, seed, n_workers):
         if amps.shape[0] < 10:
             continue
         qmat = np.array([quantize(amps[i], Q) for i in range(amps.shape[0])])
+
+        #folds are recordings, not segments, otherwise train and test overlap in time
         unique_recs = np.unique(rec_ids)
         fold_args = [(rec, amps, qmat, freqs, rec_ids, seed) for rec in unique_recs]
 
@@ -81,11 +78,10 @@ def run_loo_one_seed(hemi_files, data_dir, seed, n_workers):
     return per_hemi
 
 
+#one dae per held-out patient, trained on the pooled other six
 def run_lopo_one_seed(patients, seed):
-    """Train one DAE on 6-patient pool per held-out patient."""
     per_patient = {}
     for test_pid in sorted(patients.keys()):
-        # Pool training amps from the other 6 patients
         tr = []
         freqs_ref = None
         for pid, hemis in patients.items():
@@ -103,7 +99,6 @@ def run_lopo_one_seed(patients, seed):
             per_patient[test_pid] = {'error': repr(e)}
             continue
 
-        # Apply to held-out patient's hemispheres
         records = []
         for hd in patients[test_pid]:
             freqs = hd['freqs']; amps = hd['amps']
@@ -120,13 +115,8 @@ def run_lopo_one_seed(patients, seed):
     return per_patient
 
 
-# ---------- cross-seed aggregation ----------
-
+#takes one {hemi_key: summary} dict per seed and gives back mean/std over seeds
 def cross_seed(per_seed_hemis):
-    """per_seed_hemis: list (n_seeds) of {hemi_key: summary_dict}.
-    Returns per-hemi {metric: (mean, std)} + cohort weighted mean across hemis, then across seeds.
-    """
-    # Gather per-regime values across seeds, per hemi
     hemi_keys = set()
     for h in per_seed_hemis:
         hemi_keys.update(h.keys())
@@ -152,7 +142,7 @@ def cross_seed(per_seed_hemis):
                     'std': float(np.std(vals, ddof=1)) if len(vals) > 1 else 0.0,
                 }
 
-    # Cohort: weighted mean across hemis per seed, then mean/std across seeds
+    #cohort: weighted mean across hemis within a seed, then mean/std across seeds
     cohort = {'regime_rmse': {}}
     for rn in REGIMES:
         seed_means = []
@@ -171,14 +161,12 @@ def cross_seed(per_seed_hemis):
     return cohort, per_hemi_stats
 
 
-# ---------- main ----------
-
 def main():
     import argparse
     p = argparse.ArgumentParser()
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--seeds', type=int, nargs='+', default=DEFAULT_SEEDS)
-    p.add_argument('--K', type=int, default=5)   # unused for DAE; kept for CLI consistency
+    p.add_argument('--K', type=int, default=5)   #unused for dae, kept so the cli matches the other runners
     p.add_argument('--skip_loo', action='store_true')
     p.add_argument('--skip_lopo', action='store_true')
     args = p.parse_args()
@@ -202,7 +190,6 @@ def main():
     print(f'  hemis: {len(npz_files)}  (data_dir={data_dir})')
     print(f'  workers: {args.workers}')
 
-    # ---------- LOO ----------
     if not args.skip_loo:
         print(f'\n{"=" * 70}\n  LOO\n{"=" * 70}')
         per_seed_loo = []
@@ -229,10 +216,10 @@ def main():
                                  'per_hemi': per_hemi_loo}), f, indent=2)
         print(f'\n  Saved {out_dir}/loo_results.json')
 
-    # ---------- LOPO ----------
     if not args.skip_lopo:
         print(f'\n{"=" * 70}\n  LOPO\n{"=" * 70}')
-        # Group files by patient (prefix before _left/_right)
+
+        #patient id is the prefix before _left/_right
         patients = {}
         for f in npz_files:
             key = f.replace('.npz', '')

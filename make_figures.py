@@ -1,7 +1,8 @@
-"""
-Publication figures for IEEE MLSP
-"""
-import os, json, argparse
+#publication figures for IEEE MLSP
+
+import os
+import json
+import argparse
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -15,30 +16,32 @@ SD = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.join(SD, 'results')
 FDIR = os.path.join(SD, 'figures')
 
+
 def _json(path):
     with open(path) as f: return json.load(f)
+
 
 def _mlist(summary):
     return [m for m in ORDER if m in summary]
 
 
+#4 panels: exponent scatter, beta scatter, detection bars, CF histogram
 def fig2_specparam_impact():
-    """4-panel: exponent scatter, beta scatter, detection bars, CF distribution."""
     set_style()
     bp = os.path.join(RES, 'specparam', 'bias_results.json')
     ap = os.path.join(RES, 'specparam', 'bias_arrays.npz')
     if not os.path.exists(bp): print('  fig2: no bias_results.json'); return
     m = _json(bp); a = np.load(ap)
 
-    fig = plt.figure(figsize=(COL2, 4.5))  # figure* in LaTeX
+    fig = plt.figure(figsize=(COL2, 4.5))  #figure* in LaTeX
     gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.48, wspace=0.40,
                            height_ratios=[1, 0.9])
 
-    # (a) Exponent scatter
+    #(a) exponent scatter
     ax = fig.add_subplot(gs[0, 0])
     ce, qe = a['clean_exponents'], a['quant_exponents']
     n_pts = len(ce)
-    sc_alpha = max(0.02, min(0.12, 500.0 / n_pts))  # scale alpha to point count
+    sc_alpha = max(0.02, min(0.12, 500.0 / n_pts))  #scale alpha to point count
     ax.scatter(ce, qe, s=0.6, alpha=sc_alpha, color=PAL['sccd'], edgecolors='none', rasterized=True)
     lo, hi = min(ce.min(), qe.min()) - 0.05, max(ce.max(), qe.max()) + 0.05
     ax.plot([lo, hi], [lo, hi], '--', color=PAL['identity'], lw=0.5, alpha=0.4)
@@ -49,7 +52,7 @@ def fig2_specparam_impact():
             bbox=dict(boxstyle='round,pad=0.2', fc='white', ec=PAL['neutral'], alpha=0.8, lw=0.3))
     panel_label(ax, 'a')
 
-    # (b) Beta scatter
+    #(b) beta scatter
     ax = fig.add_subplot(gs[0, 1])
     if 'beta_clean' in a:
         bc, bq = a['beta_clean'], a['beta_quant']
@@ -64,7 +67,7 @@ def fig2_specparam_impact():
     ax.set_xlabel('Clean beta power (dB)'); ax.set_ylabel('Quantized beta power (dB)')
     panel_label(ax, 'b')
 
-    # (c) Detection bars
+    #(c) detection bars
     ax = fig.add_subplot(gs[0, 2])
     det = m['detection_rate'] * 100
     missed = (1 - m['detection_rate']) * 100
@@ -78,8 +81,8 @@ def fig2_specparam_impact():
     ax.set_ylabel('Rate (%)'); ax.set_ylim(0, 110)
     panel_label(ax, 'c')
 
-    # (d) Spurious + matched CF distribution (bottom, spans all 3 cols)
-    # Use [2,80] arrays if available for full-spectrum view
+    #(d) spurious + matched CFs along the bottom, spanning all 3 cols. prefer
+    #the [2,80] arrays when they exist so the full spectrum is visible
     ax = fig.add_subplot(gs[1, :3])
     wide_path = os.path.join(RES, 'specparam', 'bias_arrays_2_80.npz')
     cf_src = np.load(wide_path) if os.path.exists(wide_path) else a
@@ -103,15 +106,15 @@ def fig2_specparam_impact():
     save_fig(fig, os.path.join(FDIR, 'fig2_specparam_impact'))
 
 
+#1x3: exponent RMSE, detection+spurious, dR2
 def fig3_freq_sweep():
-    """1x3: exponent RMSE, detection+spurious, dR2."""
     set_style()
     fp = os.path.join(RES, 'specparam', 'freq_sweep_results.json')
     if not os.path.exists(fp): print('  fig3: no freq_sweep_results.json'); return
     data = _json(fp); all_m = data['ranges']; gate = data['gate']
     uppers = [m['freq_range'][1] for m in all_m]; x = np.arange(len(uppers))
 
-    fig, axes = plt.subplots(1, 3, figsize=(COL2, 2.4))  # figure* in LaTeX
+    fig, axes = plt.subplots(1, 3, figsize=(COL2, 2.4))  #figure* in LaTeX
     fig.subplots_adjust(wspace=0.42)
 
     ax = axes[0]
@@ -150,22 +153,22 @@ def fig3_freq_sweep():
     save_fig(fig, os.path.join(FDIR, 'fig3_freq_sweep'))
 
 
+#per-method spurious rate, detection rate and exponent RMSE after correction
 def fig4_spurious_reduction():
-    """Per-method spurious rate + detection rate + exponent RMSE after correction."""
     set_style()
     cp = os.path.join(RES, 'specparam', 'correction_results.json')
     if not os.path.exists(cp): print('  fig4: no correction_results.json'); return
     data = _json(cp); md = data['methods']
-    methods = [m for m in ORDER if m in md and m != 'svd']  # exclude SVD (catastrophic)
+    methods = [m for m in ORDER if m in md and m != 'svd']  #svd is catastrophic here, leave it out
     if not methods: return
     n = len(methods)
     colors = [PAL.get(m, '#999') for m in methods]
     labels = [LABELS.get(m, m) for m in methods]
 
-    fig, axes = plt.subplots(1, 3, figsize=(COL2, 2.4))  # figure* in LaTeX
+    fig, axes = plt.subplots(1, 3, figsize=(COL2, 2.4))  #figure* in LaTeX
     fig.subplots_adjust(wspace=0.42, bottom=0.28)
 
-    # (a) Spurious rate
+    #(a) spurious rate
     ax = axes[0]
     spur = [md[m]['spurious_rate']*100 for m in methods]
     ax.bar(range(n), spur, color=colors, alpha=0.85, width=0.55, edgecolor='none')
@@ -175,7 +178,7 @@ def fig4_spurious_reduction():
     ax.set_ylabel('Spurious rate (%)'); ax.set_ylim(0, max(spur)*1.25)
     panel_label(ax, 'a')
 
-    # (b) Detection rate
+    #(b) detection rate
     ax = axes[1]
     det = [md[m]['detection_rate']*100 for m in methods]
     ax.bar(range(n), det, color=colors, alpha=0.85, width=0.55, edgecolor='none')
@@ -185,7 +188,7 @@ def fig4_spurious_reduction():
     ax.set_ylabel('Detection rate (%)'); ax.set_ylim(0, 110)
     panel_label(ax, 'b')
 
-    # (c) Exponent RMSE
+    #(c) exponent rmse
     ax = axes[2]
     exp_rmse = [md[m]['exponent_rmse'] for m in methods]
     ax.bar(range(n), exp_rmse, color=colors, alpha=0.85, width=0.55, edgecolor='none')
@@ -198,8 +201,8 @@ def fig4_spurious_reduction():
     save_fig(fig, os.path.join(FDIR, 'fig4_spurious_reduction'))
 
 
+#every snapshot from one hemisphere, raw against corrected (Q-PPCA then SG)
 def fig5_exemplar():
-    """All snapshots from one hemisphere: raw vs corrected (Q-PPCA + SG)."""
     set_style()
     from methods import fit_qppca, correct_qppca, correct_sg
     snap_path = os.path.join(RES, 'snapshot_exemplar.npz')
@@ -236,7 +239,7 @@ def fig5_exemplar():
                 good_bins = freq_full < 45
                 freqs_cut = freq_full[good_bins]
                 rows = []
-                freq_full = [] 
+                freq_full = []
 
                 for s in snaps:
                     if len(s['fftbin']) != F0:
@@ -265,11 +268,10 @@ def fig5_exemplar():
         q_est = float(np.median(diffs[:max(len(diffs)//4, 1)])) if len(diffs) > 0 else 0.11
         print(f'    q = {q_est:.4f}')
 
-        # Fit Q-PPCA on all snapshots
         K = min(5, mat.shape[0] - 2)
         W, mu, sig2 = fit_qppca(mat, q_est, K=K, max_iter=30)
 
-        # Correct: Q-PPCA first, then full SG on top (SG smooths everything, no plateau detection)
+        #q-ppca first, then full SG on top — SG smooths everything, no plateau detection
         corrected = np.zeros_like(mat)
         for si in range(mat.shape[0]):
             qppca_out = correct_qppca(freqs, mat[si], q_est,
@@ -283,7 +285,7 @@ def fig5_exemplar():
         print(f'    Cached to {snap_path}')
 
     N = raw_db.shape[0]
-    fig, axes = plt.subplots(1, 2, figsize=(COL2, 2.6))  # figure* in LaTeX
+    fig, axes = plt.subplots(1, 2, figsize=(COL2, 2.6))  #figure* in LaTeX
     fig.subplots_adjust(wspace=0.25)
 
     for ax, data, title, mean_col in [
@@ -310,10 +312,10 @@ def fig5_exemplar():
     save_fig(fig, os.path.join(FDIR, 'fig5_exemplar'))
 
 
-# ─── SUPPLEMENTARY ───────────────────────────────────────────
+#supplementary
 
+#linear RMSE, grouped by regime
 def figS1_method_rmse():
-    """Bar chart of linear RMSE per method per regime."""
     set_style()
     ep = os.path.join(RES, 'eval', 'evaluation_results.json')
     if not os.path.exists(ep): print('  figS1: no eval results'); return
@@ -326,7 +328,7 @@ def figS1_method_rmse():
         s = summary.get(mk)
         if s is None: continue
         vals = [s['regime_rmse'].get(rn) or 0 for rn in regimes]
-        # Clip SVD for display
+        #clip svd or it blows the axis
         vals = [min(v, 0.3) for v in vals]
         ax.bar(x + (mi - nM/2 + 0.5)*bw, vals, width=bw*0.88,
                color=PAL.get(mk, '#999'), alpha=0.85, label=LABELS.get(mk, mk), edgecolor='none')
@@ -342,8 +344,8 @@ def figS1_method_rmse():
     save_fig(fig, os.path.join(FDIR, 'figS1_method_rmse'))
 
 
+#SSIM + consistency + plateaus
 def figS2_summary():
-    """SSIM + consistency + plateaus."""
     set_style()
     ep = os.path.join(RES, 'eval', 'evaluation_results.json')
     if not os.path.exists(ep): print('  figS2: no eval results'); return
@@ -380,7 +382,6 @@ def figS2_summary():
 
 
 def figS3_db_rmse():
-    """dB-domain RMSE per regime per method."""
     set_style()
     ep = os.path.join(RES, 'eval', 'evaluation_results.json')
     if not os.path.exists(ep): print('  figS3: no eval results'); return
@@ -405,8 +406,8 @@ def figS3_db_rmse():
     save_fig(fig, os.path.join(FDIR, 'figS3_db_rmse'))
 
 
+#LOO next to LOPO, one axis per regime
 def figS4_lopo():
-    """LOO vs LOPO comparison."""
     set_style()
     lp = os.path.join(RES, 'lopo', 'lopo_results.json')
     if not os.path.exists(lp): print('  figS4: no lopo_results.json'); return
@@ -448,6 +449,7 @@ ALL_FIGS = {
     'figS3': figS3_db_rmse,
     'figS4': figS4_lopo,
 }
+
 
 def main():
     parser = argparse.ArgumentParser()

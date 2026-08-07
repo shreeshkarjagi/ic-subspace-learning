@@ -1,6 +1,4 @@
-"""
-Read raw Percept JSON files
-"""
+#read raw percept json files
 
 import os
 import json
@@ -8,8 +6,8 @@ import datetime
 import numpy as np
 
 
+#percept writes datetimes in a handful of formats depending on export version
 def _parse_dt(dt_str):
-    """Try several Percept datetime formats. Return datetime or None."""
     if not dt_str:
         return None
     for fmt in ('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S',
@@ -23,7 +21,6 @@ def _parse_dt(dt_str):
 
 
 def _hemi_from_key(key):
-    """Extract hemisphere from a JSON key string."""
     k = key.upper()
     if 'LEFT' in k:
         return 'left'
@@ -33,7 +30,6 @@ def _hemi_from_key(key):
 
 
 def _hemi_from_channel(ch):
-    """Extract hemisphere from a streaming channel string."""
     ch = ch.upper()
     if 'LEFT' in ch:
         return 'left'
@@ -42,15 +38,9 @@ def _hemi_from_channel(ch):
     return 'unknown'
 
 
-# ── JSON discovery ───────────────────────────────────────────────────────
-
+#layout is PATIENT_ID/0_LFP/SESSION_FOLDER/*.json but the nesting is not
+#reliable, so walk the whole tree
 def find_jsons(lfp_dir):
-    """
-    Find all JSON files under lfp_dir at ANY depth.
-
-    Data layout: PATIENT_ID/0_LFP/SESSION_FOLDER/*.json (depth 3).
-    Uses os.walk so it works regardless of nesting.
-    """
     paths = []
     for root, _dirs, files in os.walk(lfp_dir):
         for fname in sorted(files):
@@ -61,22 +51,12 @@ def find_jsons(lfp_dir):
     return sorted(paths)
 
 
-# ── Snapshot extraction ──────────────────────────────────────────────────
-
+#yields (hemisphere, fftbin, freq) out of whatever key layout this export used
 def _extract_hemisphere_data(block):
-    """
-    Given a dict that should contain hemisphere sub-dicts, yield
-    (hemisphere, fftbin_array, freq_array) tuples.
-
-    Handles multiple possible key formats:
-      - 'HemisphereLocationDef.Left' / 'HemisphereLocationDef.Right'
-      - Keys containing 'Left' / 'Right'
-      - Direct 'FFTBinData' at this level (single-hemisphere export)
-    """
     if block is None or not isinstance(block, dict):
         return
 
-    # Case 1: block itself has FFTBinData (flat structure, rare).
+    #flat structure, rare
     if 'FFTBinData' in block and 'Frequency' in block:
         fft = block['FFTBinData']
         freq = block['Frequency']
@@ -85,14 +65,14 @@ def _extract_hemisphere_data(block):
                   np.array(freq, dtype=np.float64)
         return
 
-    # Case 2: sub-keys contain hemisphere identifiers.
+    #usual case: sub-keys carry the hemisphere, either
+    #'HemisphereLocationDef.Left' or just something containing Left/Right
     for key, hdata in block.items():
         if not isinstance(hdata, dict):
             continue
 
         hemi = _hemi_from_key(key)
         if hemi is None:
-            # Key doesn't look like a hemisphere — skip.
             continue
 
         fft_raw = hdata.get('FFTBinData', [])
@@ -107,25 +87,9 @@ def _extract_hemisphere_data(block):
               np.array(freq_raw, dtype=np.float64)
 
 
+#event_type=None pulls every event type (Morning, Evening, ...), otherwise it
+#matches case-insensitively. fftbin comes back as raw FFTBinData, untouched
 def load_snapshots(json_path, event_type=None):
-    """
-    Extract snapshot data from one JSON file.
-
-    Parameters
-    ----------
-    json_path  : str
-    event_type : str or None
-        If None, load ALL event types (Morning, Evening, etc.).
-        If a string, only load events matching that name (case-insensitive).
-
-    Returns list of dicts:
-      hemisphere    : 'left' | 'right' | 'unknown'
-      fftbin        : (F,) float64 — raw FFTBinData values, untouched
-      frequency     : (F,) float64 — frequency axis in Hz
-      datetime      : datetime | None
-      event_name    : str
-      json_path     : str
-    """
     with open(json_path, 'r') as f:
         data = json.load(f)
 
@@ -136,19 +100,16 @@ def load_snapshots(json_path, event_type=None):
     for event in events:
         ename = event.get('EventName', '').strip()
 
-        # Filter by event type if requested.
         if event_type is not None:
             if ename.lower() != event_type.lower():
                 continue
 
         dt = _parse_dt(event.get('DateTime', ''))
 
-        # Try BOTH possible keys for hemisphere data.
-        # Key 1: 'LfpFrequencySnapshotEvents' (nested) — confirmed working
-        #         in raw_fftbin_analysis.py across all 7 patients.
-        # Key 2: 'LFP' — exists in the event dict per diagnose.py but may
-        #         have a different internal structure.
-        # Strategy: try each, use whichever yields hemisphere data.
+        #two keys can hold the hemisphere block. the nested
+        #'LfpFrequencySnapshotEvents' one is what actually works across all 7
+        #patients; 'LFP' also shows up in the event dict but with a different
+        #internal structure. try each, keep whichever yields data
         found = False
         for snap_key in ('LfpFrequencySnapshotEvents', 'LFP'):
             snap_block = event.get(snap_key)
@@ -165,43 +126,25 @@ def load_snapshots(json_path, event_type=None):
                 })
                 found = True
             if found:
-                break  # Don't double-count from both keys.
+                break  #don't double-count from both keys
 
     return results
 
 
-# ── Streaming extraction ─────────────────────────────────────────────────
-
 def load_streaming(json_path):
-    """
-    Extract streaming timeseries from one JSON file.
-
-    Checks BOTH streaming modalities:
-      - IndefiniteStreaming: all 6 channels, stim OFF
-      - BrainSenseTimeDomain: 1-2 channels, stim ON
-
-    Returns list of dicts:
-      hemisphere : 'left' | 'right' | 'unknown'
-      timeseries : (T,) float64 — raw time-domain voltage
-      fs         : float — sampling rate (Hz)
-      datetime   : datetime | None
-      channel    : str
-      duration_s : float
-      source     : 'indefinite' | 'brainsense'
-    """
     with open(json_path, 'r') as f:
         data = json.load(f)
 
     results = []
 
-    # Source 1: IndefiniteStreaming (stim OFF, all channels).
+    #stim off, all 6 channels
     for stream in data.get('IndefiniteStreaming', []):
         channel = stream.get('Channel', 'Unknown')
         ts = np.array(stream.get('TimeDomainData', []), dtype=np.float64)
         fs = float(stream.get('SampleRateInHz', 250.0))
         dt = _parse_dt(stream.get('FirstPacketDateTime', ''))
 
-        if len(ts) < int(fs):  # less than 1 second
+        if len(ts) < int(fs):  #less than a second
             continue
 
         results.append({
@@ -214,7 +157,7 @@ def load_streaming(json_path):
             'source': 'indefinite',
         })
 
-    # Source 2: BrainSenseTimeDomain (stim ON, 1-2 channels).
+    #stim on, 1-2 channels
     for stream in data.get('BrainSenseTimeDomain', []):
         channel = stream.get('Channel', 'Unknown')
         ts = np.array(stream.get('TimeDomainData', []), dtype=np.float64)
@@ -237,41 +180,23 @@ def load_streaming(json_path):
     return results
 
 
-# ── Per-patient loader ───────────────────────────────────────────────────
-
 def load_patient(patient_id, lfp_dir, event_type=None):
-    """
-    Load all snapshots and streaming for one patient.
-
-    Parameters
-    ----------
-    patient_id : str
-    lfp_dir    : str — path to patient directory (contains 0_LFP/, etc.)
-    event_type : str or None — None = load all event types
-
-    Returns dict:
-      patient_id : str
-      snapshots  : {'left': [...], 'right': [...]}
-      streaming  : [stream_dicts]
-      json_paths : [str]
-    """
     json_paths = find_jsons(lfp_dir)
 
     snaps = {'left': [], 'right': []}
     streams = []
 
-    # Dedup by (datetime, event_name, hemisphere) — not just date.
-    # This keeps Morning + Evening on the same day as separate entries,
-    # while still deduplicating the same snapshot exported in multiple JSONs.
+    #dedup on (datetime, event_name, hemisphere) rather than date alone, so
+    #morning and evening on the same day stay separate while the same snapshot
+    #exported into several jsons only counts once
     seen_snap = set()
     seen_stream = set()
-    _snap_counter = 0  # fallback ID for snapshots without datetime
+    _snap_counter = 0  #fallback id when there is no datetime
     _stream_counter = 0
     _snap_warned = False
     _stream_warned = False
 
     for path in json_paths:
-        # Snapshots.
         try:
             snap_results = load_snapshots(path, event_type)
             for s in snap_results:
@@ -299,7 +224,6 @@ def load_patient(patient_id, lfp_dir, event_type=None):
                       f'{os.path.basename(path)}: {e}')
                 _snap_warned = True
 
-        # Streaming.
         try:
             for r in load_streaming(path):
                 h = r['hemisphere']
@@ -320,11 +244,9 @@ def load_patient(patient_id, lfp_dir, event_type=None):
                       f'{os.path.basename(path)}: {e}')
                 _stream_warned = True
 
-    # Sort chronologically.
     for h in list(snaps.keys()):
         snaps[h].sort(key=lambda x: x['datetime'] or datetime.datetime.min)
 
-    # Summary.
     n_left = len(snaps.get('left', []))
     n_right = len(snaps.get('right', []))
     n_unknown = len(snaps.get('unknown', []))
@@ -343,13 +265,8 @@ def load_patient(patient_id, lfp_dir, event_type=None):
     }
 
 
-# ── Diagnostic utility ───────────────────────────────────────────────────
-
+#call this when load_snapshots comes back empty and you need to see the schema
 def inspect_json_structure(json_path, max_events=2):
-    """
-    Print the key structure of a Percept JSON for debugging.
-    Call this when load_snapshots returns nothing to diagnose the schema.
-    """
     with open(json_path, 'r') as f:
         data = json.load(f)
 
@@ -369,7 +286,6 @@ def inspect_json_structure(json_path, max_events=2):
         print(f'    EventName: {ev.get("EventName")}')
         print(f'    DateTime:  {ev.get("DateTime")}')
 
-        # Show LFP structure.
         lfp = ev.get('LFP')
         if lfp is not None:
             print(f'    LFP type: {type(lfp).__name__}')
@@ -385,13 +301,12 @@ def inspect_json_structure(json_path, max_events=2):
                         print(f'        Frequency:  {len(freq)} values'
                               f' (first 3: {freq[:3]})')
         else:
-            # Try old key.
+            #older exports
             old = ev.get('LfpFrequencySnapshotEvents')
             if old is not None:
                 print(f'    LfpFrequencySnapshotEvents (nested): '
                       f'keys={list(old.keys()) if isinstance(old, dict) else type(old).__name__}')
 
-    # Streaming.
     streams = data.get('IndefiniteStreaming', [])
     print(f'\nIndefiniteStreaming: {len(streams)} entries')
     if streams:

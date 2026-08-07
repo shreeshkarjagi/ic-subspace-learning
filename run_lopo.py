@@ -1,7 +1,6 @@
-"""
-Leave-one-patient-out evaluation
-"""
-import os, json, time
+import os
+import json
+import time
 import numpy as np
 from forward_model import quantize, REGIMES
 from methods import (correct_raw, correct_sg_sel, correct_svd,
@@ -25,9 +24,9 @@ def main():
     out_dir = os.path.join(script_dir, 'results', 'lopo')
     os.makedirs(out_dir, exist_ok=True)
 
-    # Load all hemisphere data, group by patient
+    #load every hemisphere, group by patient
     npz_files = sorted([f for f in os.listdir(data_dir) if f.endswith('.npz')])
-    patients = {}  # pid -> list of (key, freqs, amps)
+    patients = {}  #pid -> list of (key, freqs, amps)
     for f in npz_files:
         key = f.replace('.npz', '')
         pid = key.split('_')[0]
@@ -50,7 +49,7 @@ def main():
         print(f'\n  Hold out {test_pid}...')
         t0 = time.time()
 
-        # Build training set from all other patients
+        #pool the other patients, truncate to the shortest freq axis we have seen
         train_amps_list = []
         train_qmat_list = []
         freqs_ref = None
@@ -73,7 +72,7 @@ def main():
         print(f'    Train: {train_amps.shape[0]} segments from '
               f'{len(patients) - 1} patients')
 
-        # Fit models once on training set
+        #fit once per fold, then reuse for every test segment
         mu, sig, B, ev = build_basis(train_amps, K=K)
         Fuse = min(F, len(mu))
 
@@ -89,7 +88,7 @@ def main():
             print(f'    QMF fit failed: {e}')
             V_qmf = None
 
-        # Test on held-out patient
+        #test on the held-out patient, any method that blows up just returns the quantized input
         patient_results = {mk: [] for mk in METHODS}
         for hd in patients[test_pid]:
             freqs = hd['freqs']
@@ -151,7 +150,7 @@ def main():
         n_test = sum(hd['amps'].shape[0] for hd in patients[test_pid])
         print(f'    Test: {n_test} segments, {time.time() - t0:.1f}s')
 
-    # Cohort average across held-out patients
+    #cohort average across held-out patients, weighted by segment count
     cohort = {}
     for pid, summ in all_results.items():
         for mk, s in summ.items():
@@ -175,7 +174,6 @@ def main():
             'plateaus_median': float(np.median([s['plateaus_median'] for s in slist])),
         }
 
-    # Print
     print(f'\n{"=" * 80}')
     print(f'  LOPO COHORT')
     print(f'{"=" * 80}')

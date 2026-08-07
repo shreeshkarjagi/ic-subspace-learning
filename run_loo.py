@@ -1,7 +1,9 @@
-"""
-Method evaluation with recording-level LOO
-"""
-import os, sys, json, time
+#method evaluation with recording-level LOO
+
+import os
+import sys
+import json
+import time
 import numpy as np
 from multiprocessing import Pool
 from forward_model import quantize, quantization_interval, to_db, REGIMES
@@ -59,7 +61,6 @@ def count_plateaus(amp):
 
 
 def eval_one_spectrum(freqs, truth, qa, corr):
-    """Compute all metrics for one corrected spectrum against truth."""
     Fm = min(len(truth), len(corr))
     t, e, q_a = truth[:Fm], corr[:Fm], qa[:Fm]
     regime_out = {}
@@ -80,8 +81,8 @@ def eval_one_spectrum(freqs, truth, qa, corr):
     }
 
 
+#one fold holds out every segment belonging to recording fold_rec
 def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
-    """Process one LOO fold: hold out all segments from recording fold_rec."""
     test_mask = rec_ids == fold_rec
     train_mask = ~test_mask
     test_idx = np.where(test_mask)[0]
@@ -94,23 +95,22 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
 
     F = allamps.shape[1]
 
-    # Build shared basis (used by SVD and SCCD)
+    #shared basis for svd and sccd
     mu, sig, B, ev = build_basis(train_amps, K=K)
     Fuse = min(F, len(mu))
 
-    # Fit Q-PPCA on quantized training data
+    #q-ppca and qmf both train on the quantized matrix
     try:
         W_pp, mu_pp, s2_pp = fit_qppca(train_qmat, Q, K=K, max_iter=30)
     except Exception:
         W_pp, mu_pp, s2_pp = None, None, None
 
-    # Fit QMF on quantized training data
     try:
         _, V_qmf, mu_qmf, sig_qmf = fit_qmf(train_qmat, Q, K=K, max_iter=200)
     except Exception:
         V_qmf, mu_qmf, sig_qmf = None, None, None
 
-    # Fit DAE on clean training data (quantized internally as input)
+    #dae fits on clean amps, quantized version goes in as input
     try:
         dae_state = fit_dae(train_amps, Q, seed=DAE_SEED)
     except Exception:
@@ -125,7 +125,7 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
         qa = qmat[si]
         fold_indices.append(int(si))
 
-        # Per-spectrum methods
+        #per-spectrum methods, nothing to train
         corr_raw = correct_raw(freqs, qa, Q)
         corr_sg = correct_sg(freqs, qa, Q)
         corr_sg_sel = correct_sg_sel(freqs, qa, Q)
@@ -134,7 +134,7 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
             fold_results[mk].append(eval_one_spectrum(freqs, truth, qa, c))
             fold_corrected[mk].append(c)
 
-        # SVD
+        #svd
         try:
             corr = correct_svd(freqs[:Fuse], qa[:Fuse], Q,
                                mu=mu[:Fuse], sigma=sig[:Fuse], basis=B[:, :Fuse])
@@ -144,7 +144,7 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
         fold_results['svd'].append(eval_one_spectrum(freqs, truth, qa, full))
         fold_corrected['svd'].append(full)
 
-        # SCCD
+        #sccd
         try:
             corr = correct_sccd(freqs[:Fuse], qa[:Fuse], Q,
                                 mu=mu[:Fuse], sigma=sig[:Fuse],
@@ -155,7 +155,7 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
         fold_results['sccd'].append(eval_one_spectrum(freqs, truth, qa, full))
         fold_corrected['sccd'].append(full)
 
-        # Q-PPCA
+        #q-ppca
         if W_pp is not None:
             try:
                 corr = correct_qppca(freqs, qa, Q,
@@ -167,7 +167,7 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
         fold_results['qppca'].append(eval_one_spectrum(freqs, truth, qa, corr))
         fold_corrected['qppca'].append(corr)
 
-        # QMF
+        #qmf
         if V_qmf is not None:
             try:
                 corr = correct_qmf(freqs, qa, Q,
@@ -179,7 +179,7 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
         fold_results['qmf'].append(eval_one_spectrum(freqs, truth, qa, corr))
         fold_corrected['qmf'].append(corr)
 
-        # DAE
+        #dae
         if dae_state is not None:
             try:
                 corr = correct_dae(freqs, qa, Q, dae_state=dae_state)
@@ -197,13 +197,12 @@ def eval_fold(fold_rec, allamps, qmat, freqs, rec_ids, K):
     }
 
 
+#Pool.map wants a single-arg callable
 def _worker(args):
-    """Wrapper for Pool.map (needs single-arg callable)."""
     return eval_fold(*args)
 
 
 def evaluate_hemisphere(freqs, allamps, rec_ids, K=5, n_workers=1):
-    """Run full recording-level LOO evaluation. Returns metrics + corrected spectra."""
     N, F = allamps.shape
     qmat = np.array([quantize(allamps[i], Q) for i in range(N)])
     unique_recs = np.unique(rec_ids)
@@ -218,7 +217,7 @@ def evaluate_hemisphere(freqs, allamps, rec_ids, K=5, n_workers=1):
     else:
         fold_outputs = [eval_fold(*a) for a in fold_args]
 
-    # Reassemble: put corrected spectra back in original row order
+    #corrected spectra go back into original row order
     all_results = {mk: [] for mk in ALL_METHODS}
     corrected = {mk: np.full_like(allamps, np.nan) for mk in ALL_METHODS}
 
@@ -236,7 +235,6 @@ def evaluate_hemisphere(freqs, allamps, rec_ids, K=5, n_workers=1):
 
 
 def aggregate(results):
-    """Summarize per-spectrum metrics into cohort-level stats."""
     summary = {}
     for mk, recs in results.items():
         if not recs:
@@ -285,7 +283,7 @@ def main():
     eval_dir = os.path.join(script_dir, 'results', 'eval')
     os.makedirs(eval_dir, exist_ok=True)
 
-    # Find all hemisphere data files from step1
+    #one npz per hemisphere, written by prep_data.py
     npz_files = sorted([f for f in os.listdir(data_dir) if f.endswith('.npz')])
     if not npz_files:
         print(f'No data in {data_dir}/. Run prep_data.py first.')
@@ -313,13 +311,13 @@ def main():
 
         all_summ[key] = aggregate(results)
 
-        # Save corrected spectra for step3
+        #step3 reads these back
         save_dict = {'freqs': freqs, 'truth': amps}
         for mk in ALL_METHODS:
             save_dict[f'corrected_{mk}'] = corrected[mk]
         np.savez_compressed(os.path.join(eval_dir, f'{key}.npz'), **save_dict)
 
-    # Cohort aggregate (weighted by n)
+    #cohort aggregate, weighted by n
     cohort = {}
     for key, sm in all_summ.items():
         for mk, s in sm.items():
@@ -349,7 +347,6 @@ def main():
             'plateaus_median': float(np.median([s['plateaus_median'] for s in slist])),
         }
 
-    # Print table
     qr = Q / np.sqrt(12)
     print(f'\n{"=" * 100}')
     print(f'  COHORT (30s segments, recording-level LOO, K={args.K})')
@@ -374,7 +371,6 @@ def main():
         print(row)
     print(f'  q/sqrt(12) = {qr:.5f}')
 
-    # Save JSON
     out = {'cohort': coh_agg, 'per_hemi': all_summ}
     with open(os.path.join(eval_dir, 'evaluation_results.json'), 'w') as f:
         json.dump(_jsonable(out), f, indent=2)

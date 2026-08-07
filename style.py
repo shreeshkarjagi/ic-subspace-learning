@@ -1,10 +1,8 @@
-"""
-Figure style for IEEE MLSP, Wong 2011 palette
-"""
+#figure style for ieee mlsp, wong 2011 palette
 import matplotlib.pyplot as plt
 
-COL1 = 3.39   # single column (86mm)
-COL2 = 7.0    # full textwidth (178mm)
+COL1 = 3.39   #single column (86mm)
+COL2 = 7.0    #full textwidth (178mm)
 
 PAL = {
     'raw':       '#888888',
@@ -26,6 +24,7 @@ LABELS = {
     'svd': 'SVD', 'sccd': 'SCCD', 'qppca': 'Q-PPCA', 'qmf': 'QMF', 'dae': 'DAE',
 }
 ORDER = ['raw', 'sg', 'sg_sel', 'svd', 'sccd', 'qppca', 'qmf', 'dae']
+
 
 def set_style():
     plt.rcParams.update({
@@ -55,14 +54,17 @@ def set_style():
         'savefig.dpi': 300,
         'savefig.bbox': 'tight',
         'savefig.pad_inches': 0.04,
+        #42 keeps fonts as truetype so the pdf stays editable
         'pdf.fonttype': 42,
         'ps.fonttype': 42,
         'svg.fonttype': 'none',
     })
 
+
 def panel_label(ax, label, x=-0.12, y=1.08):
     ax.text(x, y, label, transform=ax.transAxes, fontsize=11,
             fontweight='bold', color=PAL['text'], va='top')
+
 
 def save_fig(fig, stem):
     for ext in ('svg', 'pdf', 'png'):
