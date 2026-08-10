@@ -14,6 +14,12 @@ helps, cutting the spurious rate to 18.3% while peak detection barely moves
 Wilcoxon signed-rank p = 1.2e-4 two-sided, 95% bootstrap CI [1.86, 2.60] pp over
 9,438 paired spectra.
 
+<p align="center">
+  <img src="assets/graphical-abstract-animated.gif"
+       alt="Animated graphical abstract showing Percept PC spectral quantization and Q-PPCA correction"
+       width="900">
+</p>
+
 ## Data
 
 Raw recordings are PHI and cannot be shared. 7 patients (14 hemispheres) with
