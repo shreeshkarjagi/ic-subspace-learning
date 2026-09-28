@@ -1,7 +1,9 @@
 # ic-subspace-learning
 
 Code for "Subspace Learning with Interval-Censored Likelihoods for Dequantizing
-Percept™ PC LFP Snapshots", IEEE MLSP 2026 (Atlanta, Sep 28 to Oct 1).
+Percept™ PC LFP Snapshots", IEEE MLSP 2026 (Atlanta, Sep 28 to Oct 1). 
+
+[Pre-print](https://arxiv.org/abs/2609.22658)
 
 The Percept PC rounds every stored spectral amplitude to a multiple of
 q ≈ 0.11 µVp. Adjacent bins whose true amplitudes differ by less than q collapse
